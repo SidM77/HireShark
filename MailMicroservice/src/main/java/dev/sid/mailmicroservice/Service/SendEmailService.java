@@ -25,5 +25,6 @@ public class SendEmailService {
         mailMessage.setSubject(subject);
 
         javaMailSender.send(mailMessage);
+        System.out.println("Email has been sent to "+ recipient);
     }
 }
