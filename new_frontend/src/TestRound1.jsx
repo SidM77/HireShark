@@ -5,8 +5,8 @@ import {Input} from "@/components/ui/input.jsx";
 import {Button} from "@/components/ui/button.jsx";
 
 
-const PREPARE_TIME = 1;
-const ANSWER_TIME = 1;
+const PREPARE_TIME = 10;
+const ANSWER_TIME = 10;
 
 const questions = {
   1: "What is the most important learning from your experience in backend development?",

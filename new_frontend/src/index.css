@@ -35,9 +35,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   /***TEMP***/
-  justify-content: center;  /* This centers horizontally */
-  align-items: center;
-  height: 100%;
+  /*justify-content: center;  !* This centers horizontally *!*/
+  /*align-items: center;*/
+  /*height: 100%;*/
 }
 
 h1 {

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ExternalLink, FileText } from "lucide-react";
+import {ExternalLink, FileText, XCircle} from "lucide-react";
+import Logo from "@/assets/logo.png"
 // import { Skeleton } from "@/components/ui/skeleton";
 
 const CandidateOverview = () => {
@@ -46,6 +47,18 @@ const CandidateOverview = () => {
     `);
   };
 
+  const handleViewPDF = (candidateId) => {
+    // Open PDF in new tab
+    window.open(`http://localhost:8080/api/v1/getPDF/${candidateId}`, '_blank');
+  };
+
+  const hasValidQA = (candidate) => {
+    return candidate.questions &&
+      candidate.answers &&
+      Object.keys(candidate.questions).length > 0 &&
+      Object.keys(candidate.answers).length > 0;
+  };
+
   const handleAssignTest = async (email, id) => {
     console.log(`Assigning test to ${email} and ${id}`);
     const response = await fetch(`http://localhost:8081/api/tests/assignTest?email=${encodeURIComponent(email)}&id=${encodeURIComponent(id)}`, {
@@ -56,7 +69,19 @@ const CandidateOverview = () => {
     });
     console.log(response.status);
 
-    // Add your test assignment logic here
+  };
+
+  //NEEDS TO BE MODIFIED TO ADD TECHNICAL TEST, CURRENTLY SENDS QA TEST
+  const handleAssignTechnicalTest = async (email, id) => {
+    console.log(`Assigning test to ${email} and ${id}`);
+    const response = await fetch(`http://localhost:8081/api/tests/assignTest?email=${encodeURIComponent(email)}&id=${encodeURIComponent(id)}`, {
+      method: 'GET',
+      headers: {
+        "Accept": "*/*"
+      }
+    });
+    console.log(response.status);
+
   };
 
   // Loading skeleton component
@@ -75,9 +100,9 @@ const CandidateOverview = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
       <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className=" mx-auto px-4 h-16 flex items-center justify-between">
           <div className="w-40"></div>
-          <img src="/logo.png" alt="Company Logo" className="h-8" />
+          <img src={Logo} alt="HireShark" className="w-1.5" />
           <div className="w-40"></div>
         </div>
       </nav>
@@ -100,8 +125,11 @@ const CandidateOverview = () => {
               {/*<LoadingSkeleton />*/}
             </>
           ) : (
-            candidates.map((candidate) => (
-              <Card key={candidate.id.timestamp} className="w-full">
+            candidates.map((candidate, index) => (
+              <Card
+                key={candidate.id.timestamp}
+                className={`w-full transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-blue-500'}`}
+              >
                 <CardContent className="flex items-center justify-between p-6">
                   {/* Email */}
                   <div className="flex-shrink-0 w-1/4">
@@ -117,27 +145,39 @@ const CandidateOverview = () => {
                     ) : (
                       <Button
                         variant="outline"
-                        onClick={() => handleAssignTest(candidate.senderEmail, candidate.id.timestamp)}
+                        onClick={() => handleAssignTechnicalTest(candidate.senderEmail, candidate.id.timestamp)}
                       >
-                        Assign Test
+                        Assign Technical Test
                       </Button>
                     )}
                   </div>
 
                   {/* View Q&A Button */}
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleViewQA(candidate.questions, candidate.answers)}
-                    className="flex items-center gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    View Q&A
-                  </Button>
+                  {hasValidQA(candidate) ? (
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleViewQA(candidate.questions, candidate.answers)}
+                      className="flex items-center gap-2"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      View Q&A
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-2 text-gray-500 cursor-not-allowed"
+                      onClick={() => handleAssignTest(candidate.senderEmail, candidate.id.timestamp)}
+                    >
+                      <XCircle className="h-4 w-4" />
+                      Assign Oral Test
+                    </Button>
+                  )}
 
                   {/* View Resume Button */}
                   <Button
                     variant="secondary"
                     className="flex items-center gap-2"
+                    onClick={() => handleViewPDF(candidate.senderEmail)}
                   >
                     <FileText className="h-4 w-4" />
                     View Resume
