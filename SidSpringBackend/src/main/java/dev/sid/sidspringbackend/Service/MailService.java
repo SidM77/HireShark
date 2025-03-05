@@ -50,14 +50,17 @@ public class MailService {
 
 
     public List<Mail> getMailwithoutPDF() {
-        // Create the query
         Query query = new Query();
-
-        // Specify the fields to include in the result
         query.fields()
                 .exclude("pdfFile");
 
-        // Execute the query
         return mongoTemplate.find(query, Mail.class);
+    }
+
+    public byte[] findResumeBasedOnCandidateEmail(String emailId) {
+        Optional<Mail> currentMail = mailRepository.findMailBySenderEmail(emailId);
+        // yea I know that it may be null cuz duh it's optional, but the frontend is such that it'll only look for stuff that's already there
+        //Basically, don't worry
+        return  currentMail.get().getPdfFile();
     }
 }

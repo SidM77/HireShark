@@ -18,11 +18,6 @@ public class SendEmailController {
         this.sendEmailService = sendEmailService;
     }
 
-//    @GetMapping("/sendEmail")
-//    public String sendEmail() {
-//        sendEmailService.sendEmail("siddanth.manoj@gmail.com", "Click here for test link https://localhost:3000/67b8ba0ca4850643c45e164d", "Invitation for Interview Round 1");
-//        return "Sent";
-//    }
 
 
     @GetMapping("/sendEmail")

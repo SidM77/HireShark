@@ -1,10 +1,5 @@
 import "regenerator-runtime";
 import "./App.css"
-// import { useState, useEffect } from 'react';
-// import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-// import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-// import { Button } from '@/components/ui/button';
-// import { Input } from '@/components/ui/input';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import TestRound1 from "@/TestRound1.jsx";
 import CandidateOverview from "@/CandidateOverview.jsx";
@@ -191,6 +186,7 @@ const App = () => {
 
         <Route path="/admin-dashboard" element={<CandidateOverview />} />
         <Route path="/round1/:someString" element={<TestRound1 />} />
+
 
       </Routes>
     </Router>

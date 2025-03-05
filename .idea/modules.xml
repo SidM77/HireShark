@@ -3,9 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BE_Project.iml" filepath="$PROJECT_DIR$/BE_Project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/frontend/DONOTUSE_frontend.iml" filepath="$PROJECT_DIR$/frontend/DONOTUSE_frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DONOTUSEBACKEND/DONOTUSEBACKEND.iml" filepath="$PROJECT_DIR$/DONOTUSEBACKEND/DONOTUSEBACKEND.iml" />
       <module fileurl="file://$PROJECT_DIR$/SidSpringBackend/SidSpringBackend.iml" filepath="$PROJECT_DIR$/SidSpringBackend/SidSpringBackend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/new_frontend/new_frontend.iml" filepath="$PROJECT_DIR$/new_frontend/new_frontend.iml" />
     </modules>
   </component>
