@@ -57,7 +57,7 @@ public class MailController {
         return mailService.getMailwithoutPDF();
     }
 
-    /** VERY VERY IMPORTANT, USE THIS TO FETCH RESUME IN CASE REDIS STOPS WORKING
+    /** VERY, VERY IMPORTANT, USE THIS TO FETCH RESUME IN CASE REDIS STOPS WORKING
      FALL BACK **/
 //    @GetMapping("/getPDF/{email_address}")
 //    public ResponseEntity<byte[]> getResume(@PathVariable String email_address) {

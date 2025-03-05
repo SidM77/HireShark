@@ -47,9 +47,9 @@ const CandidateOverview = () => {
     `);
   };
 
-  const handleViewPDF = (candidateId) => {
+  const handleViewPDF = (candidateEmail) => {
     // Open PDF in new tab
-    window.open(`http://localhost:8080/api/v1/getPDF/${candidateId}`, '_blank');
+    window.open(`http://localhost:8080/api/v1/getPDF/${candidateEmail}`, '_blank');
   };
 
   const hasValidQA = (candidate) => {

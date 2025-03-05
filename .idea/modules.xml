@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BE_Project.iml" filepath="$PROJECT_DIR$/BE_Project.iml" />
       <module fileurl="file://$PROJECT_DIR$/DONOTUSEBACKEND/DONOTUSEBACKEND.iml" filepath="$PROJECT_DIR$/DONOTUSEBACKEND/DONOTUSEBACKEND.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DONOTUSEFRONTEND/DONOTUSEFRONTEND.iml" filepath="$PROJECT_DIR$/DONOTUSEFRONTEND/DONOTUSEFRONTEND.iml" />
       <module fileurl="file://$PROJECT_DIR$/SidSpringBackend/SidSpringBackend.iml" filepath="$PROJECT_DIR$/SidSpringBackend/SidSpringBackend.iml" />
       <module fileurl="file://$PROJECT_DIR$/new_frontend/new_frontend.iml" filepath="$PROJECT_DIR$/new_frontend/new_frontend.iml" />
     </modules>
