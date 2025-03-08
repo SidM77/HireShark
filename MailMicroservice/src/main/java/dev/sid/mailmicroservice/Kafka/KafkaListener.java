@@ -17,8 +17,15 @@ import java.util.Map;
 @Component
 public class KafkaListener {
     @org.springframework.kafka.annotation.KafkaListener(topics = "oralTestTopic", groupId = "groupId")
-    void listener (String data) {
-        System.out.println("Listener received "+ data);
+    public void listener (String message) throws JsonProcessingException {
+        System.out.println("Listener received "+message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(message);
+
+        String email = jsonNode.get("email").asText();
+        String id = jsonNode.get("id").asText();
+        sendEmailService.sendEmail(email, "Please use this link to give Round 1 of the test http://localhost:5173/round1/"+ id , "Invitation to Interview Round 1");
     }
 
     @Value("${spring.kafka.bootstrap-servers}")
