@@ -14,7 +14,7 @@ public class SendEmailService {
     }
     public JavaMailSender javaMailSender;
 
-    @Value("$(spring.mail.username)")
+    @Value("$(hireshark.no-reply)")
     private String fromEmailId;
 
     public void sendEmail(String recipient, String body, String subject) {
