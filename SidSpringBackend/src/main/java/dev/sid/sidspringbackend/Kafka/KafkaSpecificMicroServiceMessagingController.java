@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 public class KafkaSpecificMicroServiceMessagingController {
-    public KafkaSpecificMicroServiceMessagingController(KafkaTemplate<String, String> kafkaTemplate) {
+    public KafkaSpecificMicroServiceMessagingController(KafkaTemplate<String, MessageRequest> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
