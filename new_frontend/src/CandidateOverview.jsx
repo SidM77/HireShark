@@ -64,8 +64,9 @@ const CandidateOverview = () => {
     const response = await fetch(`http://localhost:8080/api/v1/sendSingleTestLink`, {
       method: 'POST',
       headers: {
-        "Accept": "*/*"
-      }
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({email, id})
     });
     console.log(response.status);
 
