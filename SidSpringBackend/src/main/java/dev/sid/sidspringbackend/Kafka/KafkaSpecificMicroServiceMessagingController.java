@@ -13,8 +13,9 @@ public class KafkaSpecificMicroServiceMessagingController {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    private KafkaTemplate<String, String> kafkaTemplate;
-    @PostMapping("api/v1/messages")
+    private KafkaTemplate<String, MessageRequest> kafkaTemplate;
+
+    @PostMapping("api/v1/sendSingleTestLink")
     public void publish (@RequestBody MessageRequest messageRequest) {
         kafkaTemplate.send("oralTestTopic", messageRequest);
         System.out.println("At producer currently "+ messageRequest.toString()
