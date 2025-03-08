@@ -61,8 +61,8 @@ const CandidateOverview = () => {
 
   const handleAssignTest = async (email, id) => {
     console.log(`Assigning test to ${email} and ${id}`);
-    const response = await fetch(`http://localhost:8081/api/tests/assignTest?email=${encodeURIComponent(email)}&id=${encodeURIComponent(id)}`, {
-      method: 'GET',
+    const response = await fetch(`http://localhost:8080/api/v1/sendSingleTestLink`, {
+      method: 'POST',
       headers: {
         "Accept": "*/*"
       }
