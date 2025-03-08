@@ -73,14 +73,15 @@ const CandidateOverview = () => {
 
   //NEEDS TO BE MODIFIED TO ADD TECHNICAL TEST, CURRENTLY SENDS QA TEST
   const handleAssignTechnicalTest = async (email, id) => {
-    console.log(`Assigning test to ${email} and ${id}`);
-    const response = await fetch(`http://localhost:8081/api/tests/assignTest?email=${encodeURIComponent(email)}&id=${encodeURIComponent(id)}`, {
-      method: 'GET',
-      headers: {
-        "Accept": "*/*"
-      }
-    });
-    console.log(response.status);
+    console.log(`Assigning technical test to ${email} and ${id}`);
+    //THIS IS NOT INTENDED DO NOT USE
+    // const response = await fetch(`http://localhost:8081/api/tests/assignTest?email=${encodeURIComponent(email)}&id=${encodeURIComponent(id)}`, {
+    //   method: 'GET',
+    //   headers: {
+    //     "Accept": "*/*"
+    //   }
+    // });
+    // console.log(response.status);
 
   };
 
