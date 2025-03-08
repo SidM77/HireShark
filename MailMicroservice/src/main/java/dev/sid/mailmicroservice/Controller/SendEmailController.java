@@ -28,6 +28,7 @@ public class SendEmailController {
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
 
+    // This is a remenant of non-microservice arrangement, and is hence now redundant
     @GetMapping("/assignTest")
     public ResponseEntity<String> assignTest(@RequestParam String email,
                                             @RequestParam String id) {
