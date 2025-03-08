@@ -20,13 +20,13 @@ public class SendEmailController {
 
 
 
-    @GetMapping("/sendEmail")
-    public ResponseEntity<String> sendEmail(@RequestParam String email,
-                                            @RequestParam String body,
-                                            @RequestParam String subject) {
-        sendEmailService.sendEmail(email, body, subject);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @GetMapping("/sendEmail")
+//    public ResponseEntity<String> sendEmail(@RequestParam String email,
+//                                            @RequestParam String body,
+//                                            @RequestParam String subject) {
+//        sendEmailService.sendEmail(email, body, subject);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @GetMapping("/assignTest")
     public ResponseEntity<String> assignTest(@RequestParam String email,
