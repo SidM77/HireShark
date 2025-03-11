@@ -13,7 +13,7 @@ export default function TablePage() {
     // fetching data
     async function getData() {
       const res = await fetch(
-        'http://127.0.0.1:8080/api/v1/getInfoWithoutResumePDF',
+        'http://localhost:8080/api/v1/getInfoWithoutResumePDF',
         {
           method: 'GET',
         }
@@ -28,7 +28,7 @@ export default function TablePage() {
     }, []); 
 
     // make email list from data:
-    const emails = data.map((candidate) => candidate.senderEmail);
+    const emails = data.map((candidate: any) => ({ id: candidate.id.timestamp, email: candidate.senderEmail }));
   
     // function to create a job:
     async function handleCreateJob(jobTitle: string, jobDescription: string) {
@@ -43,6 +43,19 @@ export default function TablePage() {
       setOpen(false);
     }
 
+    const handleSendEmails = async () => {
+      const res = await fetch('http://localhost:8080/api/v1/multipleMailsTesting', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(emails),
+      })
+
+      const resp = res.json();
+      console.log(resp);
+    }
+
     return (
       <section className="py-24">
         
@@ -53,6 +66,12 @@ export default function TablePage() {
             onClick={() => setOpen(true)}
             >
               <Plus />Create Job Opening
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={handleSendEmails}
+            >
+              Send Test Link
           </Button>
           <NewJobModal open={open} setOpen={setOpen} onCreateJob={handleCreateJob} />
           <DataTable columns={columns} data={data} />

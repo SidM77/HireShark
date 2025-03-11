@@ -80,6 +80,7 @@ export default function Dashboard() {
                     <RadioGroupItem value="minScore" /> Select Candidates with Score ≥ Y%
                 </Label>
             </RadioGroup>
+            
             {/* <div className="flex gap-2">
                 <Input
                     type="number"
