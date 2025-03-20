@@ -2,7 +2,7 @@ import { Candidate, columns } from './Columns'
 import { DataTable } from '@/components/data-table'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import NewJobModal from './NewJobModal'
+// import NewJobModal from './NewJobModal'
 import { useState, useEffect } from 'react'
 
 
@@ -26,22 +26,22 @@ export default function TablePage() {
     useEffect(() => {
       getData();  
     }, []); 
+  
+    // function to create a job:
+    // async function handleCreateJob(jobTitle: string, jobDescription: string) {
+      
+    //   const payload = {
+    //     jobTitle,
+    //     jobDescription,
+    //     emails
+    //   }
+
+    //   console.log(payload);
+    //   setOpen(false);
+    // }
 
     // make email list from data:
     const emails = data.map((candidate: any) => ({ id: candidate.id.timestamp, email: candidate.senderEmail }));
-  
-    // function to create a job:
-    async function handleCreateJob(jobTitle: string, jobDescription: string) {
-      
-      const payload = {
-        jobTitle,
-        jobDescription,
-        emails
-      }
-
-      console.log(payload);
-      setOpen(false);
-    }
 
     const handleSendEmails = async () => {
       const res = await fetch('http://localhost:8080/api/v1/multipleMailsTesting', {
@@ -61,19 +61,19 @@ export default function TablePage() {
         
         <div className="container">
           <h1 className="text-3xl font-bold my-3">All Users</h1>
-          <Button 
+          {/* <Button 
             variant="outline"
             onClick={() => setOpen(true)}
             >
               <Plus />Create Job Opening
-          </Button>
+          </Button> */}
           <Button 
             variant="outline"
             onClick={handleSendEmails}
             >
               Send Test Link
           </Button>
-          <NewJobModal open={open} setOpen={setOpen} onCreateJob={handleCreateJob} />
+          {/* <NewJobModal open={open} setOpen={setOpen} onCreateJob={handleCreateJob} /> */}
           <DataTable columns={columns} data={data} />
         </div>
       </section>
