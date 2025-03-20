@@ -22,4 +22,6 @@ public class Job {
     private String jobDescription;
     private List<String> candidates;
     private boolean isOpenPosition;
+
+    private LocalDateTime jobPostingDate;
 }
