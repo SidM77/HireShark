@@ -1,5 +1,6 @@
 package dev.sid.sidspringbackend.Controller;
 
+import dev.sid.sidspringbackend.DTOs.CandidateRankJobAddRequestDTO;
 import dev.sid.sidspringbackend.Model.Job;
 import dev.sid.sidspringbackend.Service.JobService;
 import org.springframework.http.HttpStatus;
@@ -34,11 +35,19 @@ public class JobController {
     public ResponseEntity<Job> findJobByHumanReadableJobId(@PathVariable String humanReadableJobId) {
         Optional<Job> job = jobService.findJobByHumanReadableJobId(humanReadableJobId);
 
-        if (job.isPresent()) {
-            return ResponseEntity.ok(job.get());  // Return 200 OK with the job
-        } else {
-            return ResponseEntity.notFound().build();  // Return 404 Not Found if job is not found
-        }
+        return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+//        if (job.isPresent()) {
+//            return ResponseEntity.ok(job.get());  // Return 200 OK with the job
+//        } else {
+//            return ResponseEntity.notFound().build();  // Return 404 Not Found if job is not found
+//        }
+    }
+
+    @PutMapping("/addPotentialRankedCandidatesToAJob")
+    public ResponseEntity<Job> addCandidatesByHumanReadableJobId(@RequestBody CandidateRankJobAddRequestDTO candidateRankJobAddRequestDTO) {
+        Optional<Job> job =  jobService.addCandidatesToJob(candidateRankJobAddRequestDTO.getCandidateRankList(), candidateRankJobAddRequestDTO.getHumanReadableJobId());
+        return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
 
