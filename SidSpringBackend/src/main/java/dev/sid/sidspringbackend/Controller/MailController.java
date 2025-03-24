@@ -72,9 +72,13 @@ public class MailController {
     @GetMapping("/getPDF/{email_address}")
     public ResponseEntity<byte[]> getResume(@PathVariable String email_address) {
         String redisKey = "resume:" + email_address;
+        byte[] cachedPdf = null;
 
-        // Try to get PDF from Redis
-        byte[] cachedPdf = redisTemplate.opsForValue().get(redisKey);
+        try {
+            cachedPdf = redisTemplate.opsForValue().get(redisKey);
+        } catch (Exception e) {
+            System.out.println("Redis access failed for " + email_address + ": " + e.getMessage());
+        }
 
         if (cachedPdf != null) {
             System.out.println("Resume accessed from cache for " + email_address);
@@ -85,8 +89,11 @@ public class MailController {
         System.out.println("Resume accessed from database for " + email_address);
         byte[] resumePdf = mailService.findResumeBasedOnCandidateEmail(email_address);
 
-        // Cache the PDF with 30 minutes expiration
-        redisTemplate.opsForValue().set(redisKey, resumePdf, Duration.ofMinutes(30));
+        try {
+            redisTemplate.opsForValue().set(redisKey, resumePdf, Duration.ofMinutes(30));
+        } catch (Exception e) {
+            System.out.println("Failed to cache resume for " + email_address + " in Redis: " + e.getMessage());
+        }
 
         return createPdfResponse(email_address, resumePdf);
     }
