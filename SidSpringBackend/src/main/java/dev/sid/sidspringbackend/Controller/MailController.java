@@ -28,7 +28,7 @@ public class MailController {
 
     @GetMapping
     public ResponseEntity<List<Mail>> getAllMails() {
-        return new ResponseEntity<List<Mail>>(mailService.allMails(),HttpStatus.OK);
+        return new ResponseEntity<>(mailService.allMails(), HttpStatus.OK);
     }
 
     @PostMapping("/update-answers")
