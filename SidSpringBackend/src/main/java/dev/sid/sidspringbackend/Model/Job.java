@@ -1,6 +1,7 @@
 package dev.sid.sidspringbackend.Model;
 
 
+import dev.sid.sidspringbackend.POJOs.CandidateRank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,8 @@ public class Job {
     private String humanReadableJobId;
     private String jobTitle;
     private String jobDescription;
-    private List<String> candidates;
+//    private List<String> candidates;
+    private List<CandidateRank> allCandidatesRanking;
     private boolean isOpenPosition;
 
     private LocalDateTime jobPostingDate;
