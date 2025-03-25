@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("api/v1")
 public class KafkaSpecificMicroServiceMessagingController {
     public KafkaSpecificMicroServiceMessagingController(KafkaTemplate<String, MessageRequest> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
