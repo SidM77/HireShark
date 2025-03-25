@@ -12,4 +12,9 @@ public class KafkaTopicConfig {
     public NewTopic oralTestTopic() {
         return TopicBuilder.name("oralTestTopic").build();
     }
+
+    @Bean
+    public NewTopic technicalTestTopic() {
+        return TopicBuilder.name("technicalTestTopic").build();
+    }
 }
