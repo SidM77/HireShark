@@ -22,6 +22,7 @@ public class JobService {
     public Job addNewJob(Job job) {
         String humanReadableJobId = "JX" + getBase36(5);
         job.setHumanReadableJobId(humanReadableJobId);
+        job.setOpenPosition(true);
         return jobRepository.save(job);
     }
 
