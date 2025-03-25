@@ -34,8 +34,8 @@ public class KafkaListener {
 
 
     @org.springframework.kafka.annotation.KafkaListener(topics = "oralTestTopic", groupId = "groupId")
-    public void listener (String message) throws JsonProcessingException {
-        System.out.println("Listener received "+message);
+    public void listenerSidOralTestLink (String message) throws JsonProcessingException {
+        System.out.println("Listener received for oralTest "+message);
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(message);
