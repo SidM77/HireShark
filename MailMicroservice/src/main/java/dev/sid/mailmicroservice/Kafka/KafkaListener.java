@@ -45,5 +45,17 @@ public class KafkaListener {
         sendEmailService.sendEmail(email, "Please use this link to give Round 1 of the test http://localhost:5173/round1/"+ id , "Invitation to Interview Round 1");
     }
 
+    @org.springframework.kafka.annotation.KafkaListener(topics = "technicalTestTopic", groupId = "groupId")
+    public void listenerKrishTechnicalTestLink (String message) throws JsonProcessingException {
+        System.out.println("Listener received for technical test "+message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(message);
+
+        String email = jsonNode.get("email").asText();
+        String id = jsonNode.get("id").asText();
+        sendEmailService.sendEmail(email, "Congratulations on clearing Round-1. Please use this link to give Round 2 of the test http://localhost:5173/round2/"+ id , "Invitation to Interview Round 2");
+    }
+
 
 }
