@@ -33,4 +33,21 @@ public class KafkaSpecificMicroServiceMessagingController {
             System.out.println("At producer currently "+ message.toString());
         }
     }
+
+    @PostMapping("/sendSingleTestLink/technicalRound2")
+    public void publishSingleTechnical (@RequestBody MessageRequest messageRequest) {
+        kafkaTemplate.send("technicalTestTopic", messageRequest);
+        System.out.println("At producer currently "+ messageRequest.toString()
+        );
+    }
+
+    @PostMapping("/sendMultipleTestLink/technicalRound2")
+    public void publishMultipleTechnical (@RequestBody List<MessageRequest> messageRequest) {
+//        kafkaTemplate.send("oralTestTopic", messageRequest);
+        for (MessageRequest message : messageRequest) {
+            kafkaTemplate.send("technicalTestTopic", message);
+
+            System.out.println("At producer currently "+ message.toString());
+        }
+    }
 }
