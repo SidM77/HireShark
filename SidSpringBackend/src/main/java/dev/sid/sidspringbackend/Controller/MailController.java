@@ -54,7 +54,7 @@ public class MailController {
 
     @GetMapping("/getInfoWithoutResumePDF")
     public List<Mail> getInfoWithoutResumePDF() {
-        return mailService.getMailwithoutPDF();
+        return mailService.getMailWithoutPDF();
     }
 
     @GetMapping("/getInfoWithoutResumePDF/specific")
