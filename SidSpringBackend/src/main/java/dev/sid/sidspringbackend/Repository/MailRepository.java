@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,7 +18,10 @@ public interface MailRepository extends MongoRepository<Mail, ObjectId> {
 
     Optional<Mail> findMailBySenderEmail(String senderEmail);
 
-//    @Query("{}")
+    List<Mail> findBySenderEmailIn(List<String> emails);
+
+    @Query(value = "{ 'senderEmail' : { $in: ?0 } }", fields = "{ 'pdfFile' : 0 }")
+    List<Mail> findByEmailInExcludePdfFile(List<String> emails);
 
 }
 
