@@ -52,7 +52,7 @@ public class MailController {
         }
     }
 
-    @GetMapping("/getInfoWithoutResumePDF")
+    @GetMapping("/getInfoWithoutResumePDF/all")
     public List<Mail> getInfoWithoutResumePDF() {
         return mailService.getMailWithoutPDF();
     }
