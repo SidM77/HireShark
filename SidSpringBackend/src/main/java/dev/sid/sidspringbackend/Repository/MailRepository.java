@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface MailRepository extends MongoRepository<Mail, ObjectId> {
 
     @Query("{ 'sender_email' : ?0 }")
-    Optional<Mail> findBySenderEmail(String senderEmail);
+    Optional<Mail> findBySenderEmailRedundant(String Email, int someOtherNumber);
 
     Optional<Mail> findMailBySenderEmail(String senderEmail);
 
