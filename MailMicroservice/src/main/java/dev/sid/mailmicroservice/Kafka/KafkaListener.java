@@ -42,7 +42,7 @@ public class KafkaListener {
 
         String email = jsonNode.get("email").asText();
         String id = jsonNode.get("id").asText();
-        sendEmailService.sendEmail(email, "Please use this link to give Round 1 of the test http://localhost:5173/round1/"+ id , "Invitation to Interview Round 1");
+        sendEmailService.sendEmail(email, "Congratulations on clearing Round-1. Please use this link to give Round 2 of the test http://localhost:5174/round2/"+ id , "Invitation to Interview Round 2");
     }
 
     @org.springframework.kafka.annotation.KafkaListener(topics = "technicalTestTopic", groupId = "groupId")
@@ -54,7 +54,7 @@ public class KafkaListener {
 
         String email = jsonNode.get("email").asText();
         String id = jsonNode.get("id").asText();
-        sendEmailService.sendEmail(email, "Congratulations on clearing Round-1. Please use this link to give Round 2 of the test http://localhost:5173/round2/"+ id , "Invitation to Interview Round 2");
+        sendEmailService.sendEmail(email, "Please use this link to give Round-1 of the test http://localhost:5000/round1/"+ id , "Invitation to Interview Round 1");
     }
 
 

@@ -61,7 +61,7 @@ const CandidateOverview = () => {
 
   const handleAssignTest = async (email, id) => {
     console.log(`Assigning test to ${email} and ${id}`);
-    const response = await fetch(`http://localhost:8080/api/v1/sendSingleTestLink/oralRound1`, {
+    const response = await fetch(`http://localhost:8080/api/v1/sendSingleTestLink/oralRound2`, {
       method: 'POST',
       headers: {
         "Content-Type":"application/json"

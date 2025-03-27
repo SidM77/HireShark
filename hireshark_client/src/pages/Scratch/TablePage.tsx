@@ -44,7 +44,7 @@ export default function TablePage() {
     const emails = data.map((candidate: any) => ({ id: candidate.id.timestamp, email: candidate.senderEmail }));
 
     const handleSendEmails = async () => {
-      const res = await fetch('http://localhost:8080/api/v1/sendMultipleTestLink/oralRound1', {
+      const res = await fetch('http://localhost:8080/api/v1/sendMultipleTestLink/oralRound2', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
