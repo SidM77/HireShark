@@ -185,7 +185,7 @@ const App = () => {
       <Routes>
 
         <Route path="/admin-dashboard" element={<CandidateOverview />} />
-        <Route path="/round1/:someString" element={<TestRound1 />} />
+        <Route path="/round2/:someString" element={<TestRound1 />} />
 
 
       </Routes>

@@ -15,14 +15,14 @@ public class KafkaSpecificMicroServiceMessagingController {
 
     private KafkaTemplate<String, MessageRequest> kafkaTemplate;
 
-    @PostMapping("/sendSingleTestLink/oralRound1")
+    @PostMapping("/sendSingleTestLink/oralRound2")
     public void publishSingleOral (@RequestBody MessageRequest messageRequest) {
         kafkaTemplate.send("oralTestTopic", messageRequest);
         System.out.println("At producer currently "+ messageRequest.toString()
         );
     }
 
-    @PostMapping("/sendMultipleTestLink/oralRound1")
+    @PostMapping("/sendMultipleTestLink/oralRound2")
     public void publishMultipleOral (@RequestBody List<MessageRequest> messageRequest) {
 //        kafkaTemplate.send("oralTestTopic", messageRequest);
         for (MessageRequest message : messageRequest) {
@@ -32,14 +32,14 @@ public class KafkaSpecificMicroServiceMessagingController {
         }
     }
 
-    @PostMapping("/sendSingleTestLink/technicalRound2")
+    @PostMapping("/sendSingleTestLink/technicalRound1")
     public void publishSingleTechnical (@RequestBody MessageRequest messageRequest) {
         kafkaTemplate.send("technicalTestTopic", messageRequest);
         System.out.println("At producer currently "+ messageRequest.toString()
         );
     }
 
-    @PostMapping("/sendMultipleTestLink/technicalRound2")
+    @PostMapping("/sendMultipleTestLink/technicalRound1")
     public void publishMultipleTechnical (@RequestBody List<MessageRequest> messageRequest) {
 //        kafkaTemplate.send("oralTestTopic", messageRequest);
         for (MessageRequest message : messageRequest) {
