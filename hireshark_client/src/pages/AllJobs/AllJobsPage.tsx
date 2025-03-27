@@ -9,7 +9,7 @@ export interface Job extends Candidate {
   jobTitle: string;
   jobDescription: string;
   candidates: Array<Candidate>;
-  isOpen: boolean;
+  openPosition: boolean;
   id: any;
 }
 
@@ -129,7 +129,7 @@ function AllJobsPage() {
                 <div className='flex flex-col items-start gap-1'>
                   <div className='w-full flex items-start justify-between gap-3'>
                     <div className='text-left text-2xl line-clamp-2 font-semibold text-green-600'>{job.jobTitle}</div>
-                    <div>{job.isOpen ? <div className='bg-green-400 p-1 rounded-md text-sm text-white shadow-md'>Open</div> : <div className='bg-red-400 p-1 rounded-md text-sm text-white shadow-md'>Closed</div>}</div>
+                    <div>{job.openPosition ? <div className='bg-green-400 p-1 rounded-md text-sm text-white shadow-md'>Open</div> : <div className='bg-red-400 p-1 rounded-md text-sm text-white shadow-md'>Closed</div>}</div>
                   </div>
                   <div className='flex items-start'>
                     <p><span className='font-bold'>Job ID:</span> {job.humanReadableJobId}</p>
