@@ -14,7 +14,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path='/all-candidates' element={<TablePage/>}/>
-                <Route path='/jobs/selection/:meow' element={<Dashboard/>}/>
+                <Route path='/jobs/selection' element={<Dashboard/>}/>
                 <Route path='/all-jobs' element={<AllJobsPage />}/>
             </Routes>
         </BrowserRouter>

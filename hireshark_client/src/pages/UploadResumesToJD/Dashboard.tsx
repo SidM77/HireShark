@@ -1,12 +1,35 @@
 import { Candidate, columns } from './Columns'
 import { DataTable } from './data_table';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { Job } from '../AllJobs/AllJobsPage';
+import Stepper from '@/components/custom/Stepper';
 
 export default function Dashboard() {
+
+    const location = useLocation();
+    let humanReadableJobId = location.state.humanReadableJobId
+
+    const fetchSpecificJobData = async (humanReadableJobId: string) => {
+
+        const res = await fetch(`http://localhost:8080/api/v1/findJobById/${humanReadableJobId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+
+        const resp: Job = await res.json();
+        console.log(resp)
+    }
+
+    useEffect(() => {
+        fetchSpecificJobData(humanReadableJobId);
+    }, []);
 
     let ogData: Candidate[] = [
         {
@@ -66,6 +89,15 @@ export default function Dashboard() {
 
     return (
         <section className="py-10">
+
+            <div className='my-5'>
+                <Stepper currentStep={1} numberOfSteps={5}/>
+                <div className='flex justify-between mt-3'>
+                    <Button>Previous step</Button>
+                    <Button>Next step</Button>
+                </div>
+            </div>
+
             <h2 className="text-lg font-semibold">Candidate Selection</h2>
 
             <RadioGroup
@@ -80,7 +112,7 @@ export default function Dashboard() {
                     <RadioGroupItem value="minScore" /> Select Candidates with Score ≥ Y%
                 </Label>
             </RadioGroup>
-            
+
             {/* <div className="flex gap-2">
                 <Input
                     type="number"
