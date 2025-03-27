@@ -52,9 +52,14 @@ public class MailController {
         }
     }
 
-    @GetMapping("/getInfoWithoutResumePDF")
+    @GetMapping("/getInfoWithoutResumePDF/all")
     public List<Mail> getInfoWithoutResumePDF() {
-        return mailService.getMailwithoutPDF();
+        return mailService.getMailWithoutPDF();
+    }
+
+    @GetMapping("/getInfoWithoutResumePDF/specific")
+    public List<Mail> getInfoWithoutResumePDFForSpecificEmails(@RequestBody List<String> senderEmails) {
+        return mailService.getMailWithoutPDFSpecific(senderEmails);
     }
 
     /** VERY, VERY IMPORTANT, USE THIS TO FETCH RESUME IN CASE REDIS STOPS WORKING

@@ -16,7 +16,7 @@ const CandidateOverview = () => {
 
   const fetchCandidates = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/getInfoWithoutResumePDF');
+      const response = await fetch('http://localhost:8080/api/v1/getInfoWithoutResumePDF/all');
       if (!response.ok) {
         throw new Error('Failed to fetch candidates');
       }
