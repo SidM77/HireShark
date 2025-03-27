@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus } from 'lucide-react'
 import NewJobModal from './NewJobModal';
 import { Candidate } from '../Scratch/Columns';
@@ -16,6 +17,8 @@ function AllJobsPage() {
 
   const [open, setOpen] = useState<boolean>(false);
   const [allJobs, setAllJobs] = useState<Job[]>([]);
+
+  let navigate = useNavigate();
 
   const getAllJobs = async () => {
     const res = await fetch('http://localhost:8080/api/v1/getAllJobs', {
@@ -43,16 +46,6 @@ function AllJobsPage() {
     }) 
 
     console.log(res);
-    setOpen(false);
-  }
-
-  async function handleCreateJob(jobTitle: string, jobDescription: string) {
-    const payload = {
-      jobTitle,
-      jobDescription,
-    }
-
-    console.log(payload);
     setOpen(false);
   }
 
@@ -125,7 +118,13 @@ function AllJobsPage() {
           allJobs.length > 0 && (
             allJobs.map((job) => (
               <div className='flex flex-col justify-between gap-2 px-5 py-3 w-full h-[280px] border-[2px] rounded-md border-solid shadow-lg
-                hover:bg-gray-100 hover:cursor-pointer active:inset-0 active:shadow-inner transition-all duration-150'>
+                hover:bg-gray-100 hover:cursor-pointer active:inset-0 active:shadow-inner transition-all duration-150'
+                onClick={() => {
+                  navigate('/jobs/selection', {
+                    state: {humanReadableJobId: job.humanReadableJobId}
+                  });
+                }}
+                >
                 
                 <div className='flex flex-col items-start gap-1'>
                   <div className='w-full flex items-start justify-between gap-3'>

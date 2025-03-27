@@ -1,12 +1,34 @@
 import { Candidate, columns } from './Columns'
 import { DataTable } from './data_table';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { Job } from '../AllJobs/AllJobsPage';
 
 export default function Dashboard() {
+
+    const location = useLocation();
+    let humanReadableJobId = location.state.humanReadableJobId
+
+    const fetchSpecificJobData = async (humanReadableJobId: string) => {
+
+        const res = await fetch(`http://localhost:8080/api/v1/findJobById/${humanReadableJobId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            } 
+        })
+
+        const resp: Job = await res.json();
+        console.log(resp)
+    }
+
+    useEffect(() => {
+        fetchSpecificJobData(humanReadableJobId);
+    }, []);
 
     let ogData: Candidate[] = [
         {
