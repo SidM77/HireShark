@@ -49,7 +49,7 @@ public class MailService {
     }
 
 
-    public List<Mail> getMailwithoutPDF() {
+    public List<Mail> getMailWithoutPDF() {
         Query query = new Query();
         query.fields()
                 .exclude("pdfFile");
@@ -62,5 +62,9 @@ public class MailService {
         // yea I know that it may be null cuz duh it's optional, but the frontend is such that it'll only look for stuff that's already there
         //Basically, don't worry
         return  currentMail.get().getPdfFile();
+    }
+
+    public List<Mail> getMailWithoutPDFSpecific(List<String> senderEmails) {
+        return mailRepository.findByEmailInExcludePdfFile(senderEmails);
     }
 }

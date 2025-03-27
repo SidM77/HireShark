@@ -13,7 +13,7 @@ export default function TablePage() {
     // fetching data
     async function getData() {
       const res = await fetch(
-        'http://localhost:8080/api/v1/getInfoWithoutResumePDF',
+        'http://localhost:8080/api/v1/getInfoWithoutResumePDF/all',
         {
           method: 'GET',
         }
@@ -44,7 +44,7 @@ export default function TablePage() {
     const emails = data.map((candidate: any) => ({ id: candidate.id.timestamp, email: candidate.senderEmail }));
 
     const handleSendEmails = async () => {
-      const res = await fetch('http://localhost:8080/api/v1/multipleMailsTesting', {
+      const res = await fetch('http://localhost:8080/api/v1/sendMultipleTestLink/oralRound1', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

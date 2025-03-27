@@ -1,6 +1,7 @@
 package dev.sid.sidspringbackend.Service;
 
 import dev.sid.sidspringbackend.Model.Job;
+import dev.sid.sidspringbackend.POJOs.CandidateRank;
 import dev.sid.sidspringbackend.Repository.JobRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class JobService {
     public Job addNewJob(Job job) {
         String humanReadableJobId = "JX" + getBase36(5);
         job.setHumanReadableJobId(humanReadableJobId);
+        job.setOpenPosition(true);
         return jobRepository.save(job);
     }
 
@@ -56,5 +58,16 @@ public class JobService {
 
     public Optional<Job> findJobByHumanReadableJobId(String humanReadableJobId) {
         return jobRepository.findByHumanReadableJobId(humanReadableJobId);
+    }
+
+    public Optional<Job> addCandidatesToJob(List<CandidateRank> candidateRankList, String humanReadableJobId) {
+        Optional<Job> job = findJobByHumanReadableJobId(humanReadableJobId);
+
+        job.ifPresent(j -> {
+            j.setAllCandidatesRanking(candidateRankList);
+            jobRepository.save(j);
+        });
+
+        return job;
     }
 }
