@@ -9,6 +9,11 @@ import { Label } from '@/components/ui/label';
 import { Job } from '../AllJobs/AllJobsPage';
 import Stepper from '@/components/custom/Stepper';
 
+export interface Phase {
+    stepId: number;
+    label: string;
+}
+
 export default function Dashboard() {
 
     const location = useLocation();
@@ -64,6 +69,26 @@ export default function Dashboard() {
         }
     ];
 
+    const phaseInfo: Phase[] = [
+            {
+                stepId: 1,
+                label: "AI Ranking of Candidates"
+            },
+            {
+                stepId: 2,
+                label: "Send Link for Round 1"
+            },
+            {
+                stepId: 3,
+                label: "Send Link for Round 2"
+            },
+            {
+                stepId: 4,
+                label: "Send Link for Interview"
+            }
+        ]
+    
+
     const [selectMode, setSelectMode] = useState<"topX" | "minScore">("topX");
     const [topX, setTopX] = useState<number | null>(null);
     const [minScore, setMinScore] = useState<number | null>(null);
@@ -88,14 +113,10 @@ export default function Dashboard() {
     }
 
     return (
-        <section className="py-10">
+        <section className="">
 
             <div className='my-5'>
-                <Stepper currentStep={1} numberOfSteps={5}/>
-                <div className='flex justify-between mt-3'>
-                    <Button>Previous step</Button>
-                    <Button>Next step</Button>
-                </div>
+                <Stepper currentStep={1} numberOfSteps={4} phaseInfo={phaseInfo} />
             </div>
 
             <h2 className="text-lg font-semibold">Candidate Selection</h2>
