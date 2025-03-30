@@ -185,7 +185,8 @@ const App = () => {
       <Routes>
 
         <Route path="/admin-dashboard" element={<CandidateOverview />} />
-        <Route path="/round2/:someString" element={<TestRound1 />} />
+        <Route path="/round2/:someString" element={<TestRound2 />} />
+        <Route path="/richRound2/:someString" element={<RichRound2 />} />
 
 
       </Routes>
