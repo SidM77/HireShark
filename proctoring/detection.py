@@ -84,7 +84,7 @@ def process():
         GLOBAL_CHEAT = 0
     print("Cheat percent: ", PERCENTAGE_CHEAT, GLOBAL_CHEAT)
 
-def run_detection(video_duration):
+def run_detection(video_duration, test_score):
     global XDATA,YDATA,VIDEO_COMPLETED
     plt.show()
     axes = plt.gca()

@@ -6,6 +6,12 @@ import sys
 import time
 import json
 import logging
+from pymongo import MongoClient
+from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +22,27 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# MongoDB Atlas Configuration
+try:
+    # Get MongoDB Atlas connection string from environment variable
+    MONGODB_URI = os.getenv('MONGODB_URI')
+    if not MONGODB_URI:
+        raise ValueError("MONGODB_URI environment variable is not set")
+
+    # Connect to MongoDB Atlas
+    client = MongoClient(MONGODB_URI)
+    # Test the connection
+    client.server_info()
+    
+    # Get database and collection
+    db = client['mailHandler']
+    jobs = db['jobs']
+    logger.info("Successfully connected to MongoDB Atlas")
+    print("Successfully connected to MongoDB Atlas")
+except Exception as e:
+    logger.error(f"Failed to connect to MongoDB Atlas: {str(e)}")
+    raise
 
 def wait_for_file(file_path, timeout=30):
     """
@@ -127,6 +154,47 @@ def process_test():
                             stats[key] = value
 
             logger.info(f"Final statistics: {stats}")
+
+            new_document = {
+                'senderEmail': stats.get('userEmail'),
+                'audioCheatCount': stats.get('audioCheatCount', 0),
+                'isCheating': False, # need to fix later
+                'multipleFacesDetected': stats.get('multipleFacesDetected', False),
+                'susSpikeCount': stats.get('susSpikeCount', 0),
+                'testScore': stats.get('testScore'),
+                'totalHeadMovements': stats.get('totalHeadMovements', 0),
+                # 'detectionRate': stats.get('detectionRate', 0),
+            }
+
+            print("New document: ", new_document)
+
+            # First check if jobId exists in MongoDB using humanReadableJobId
+            job_id = str(stats.get('jobId'))  # Ensure jobId is string type
+            print(f"Looking for humanReadableJobId: {job_id} (type: {type(job_id)})")
+            
+            # Search by humanReadableJobId
+            existing_job = jobs.find_one({'humanReadableJobId': str(job_id)})
+            print("Existing job found")
+            
+            if existing_job:
+                print("Job ID found in MongoDB")
+                try:
+                    # Update the document by pushing the new test results into allTechTestResults array
+                    result = jobs.update_one(
+                        {'humanReadableJobId': str(job_id)},
+                        {'$push': {'allTechTestResults': new_document}}
+                    )
+                    logger.info(f"Test results added to allTechTestResults array for jobId: {job_id}")
+                    print(f"Update result: {result.modified_count} documents modified")
+                except Exception as e:
+                    logger.error(f"Error storing results in MongoDB: {str(e)}")
+            else: 
+                print("Job ID not found in MongoDB")
+                return jsonify({
+                    'status': 'error',
+                    'message': f"Job ID not found in MongoDB: {job_id}"
+                }), 404
+
             return jsonify({
                 'status': 'success',
                 'message': 'Test processed successfully',

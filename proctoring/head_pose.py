@@ -262,8 +262,11 @@ def pose(video_path, output_queue):
                     current_time = time.time()
                     
                     if current_time - last_movement_time >= MOVEMENT_COOLDOWN:
-                        # Check for movement based on raw angles
-                        if abs(y) > abs(x):  # Horizontal movement
+                        # Initialize text variable
+                        text = "Forward"
+                        
+                        # Horizontal movement
+                        if abs(y) > abs(x):  # Horizontal movement is dominant
                             if y < LEFT_THRESHOLD:  # Looking left
                                 if last_movement != "left":
                                     movement_start_time = current_time

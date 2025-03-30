@@ -784,7 +784,8 @@
         // Function to get job ID from URL
         function getjobId() {
             const path = window.location.pathname;
-            const match = path.match(/\/round1\/(\d+)/);
+            console.log(path);
+            const match = path.match(/\/round1\/([a-zA-Z0-9]+)/);
             if (match) {
                 jobId = match[1];
                 console.log('Job ID:', jobId);
