@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Proctored Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome-page {
+            text-align: center;
+            margin-top: 100px;
+        }
+        .quiz-container {
+            display: none;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+        }
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .webcam-container {
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            width: 200px;
+            z-index: 100;
+            border: 2px solid #333;
+            background-color: #333;
+        }
+        #webcamVideo {
+            width: 100%;
+            display: block;
+        }
+        .question-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .options-container {
+            margin: 20px 0;
+        }
+        .option {
+            display: block;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        .option.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .btn-end {
+            background-color: #f44336;
+        }
+        .btn-end:hover {
+            background-color: #d32f2f;
+        }
+        .results-container {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .result-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        .correct {
+            border-left: 5px solid #4CAF50;
+        }
+        .incorrect {
+            border-left: 5px solid #f44336;
+        }
+        
+        /* Email input styling */
+        .form-group {
+            margin: 20px 0;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        /* Custom alert styling */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        .custom-alert-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .custom-alert-box p {
+            margin-bottom: 20px;
+        }
+        .alert-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-page" id="welcomePage">
+            <h1>Welcome to the Proctored Quiz</h1>
+            <p>This is a proctored test. Your webcam will record during the entire test duration.</p>
+            <p>You will have 5 minutes to answer 5 randomly selected questions.</p>
+            <p>The test will run in full-screen mode.</p>
+            
+            <div class="form-group">
+                <label for="emailInput">Enter your email address:</label>
+                <input type="email" id="emailInput" placeholder="your.email@example.com" required>
+            </div>
+            
+            <button class="btn" id="startTestBtn">Start Test</button>
+        </div>
+
+        <div class="quiz-container" id="quizContainer">
+            <div class="navbar">
+                <div class="timer" id="timer">05:00</div>
+                <button class="btn btn-end" id="endTestBtn">End Test</button>
+            </div>
+
+            <div class="webcam-container">
+                <video id="webcamVideo" autoplay muted></video>
+            </div>
+
+            <div class="question-container">
+                <h2 id="questionNumber">Question 1</h2>
+                <p id="questionText"></p>
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be inserted here -->
+                </div>
+                <div class="navigation-buttons">
+                    <button class="btn" id="prevBtn">Previous Question</button>
+                    <button class="btn" id="nextBtn">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <h1>Quiz Results</h1>
+            <h2>Your Score: <span id="score"></span></h2>
+            <p>Email: <span id="userEmail"></span></p>
+            <div id="resultSummary"></div>
+            <p id="downloadInfo">Your recording has been downloaded automatically. If it didn't download, click the button below:</p>
+            <button class="btn" id="downloadBtn">Download Recording</button>
+        </div>
+    </div>
+    
+    <!-- Custom alert dialog -->
+    <div class="custom-alert-overlay" id="customAlertOverlay">
+        <div class="custom-alert-box">
+            <p id="customAlertMessage">Are you sure you want to end the test?</p>
+            <div class="alert-buttons">
+                <button class="btn" id="confirmBtn">Yes</button>
+                <button class="btn" id="cancelBtn">No</button>
+                <!-- <button class="btn" id="confirmBtn">Ok</button> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-alert-overlay" id="customAlertOkOverlay">
+        <div class="custom-alert-box">
+            <p id="customAlertOkMessage">Are you sure you want to end the test?</p>
+            <div class="alert-buttons">
+                <button class="btn" id="okBtn">Ok</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample questions dataset
+        const allQuestions = [
+            {
+                id: 1,
+                question: "What is JavaScript primarily used for?",
+                options: [
+                    "Server-side scripting",
+                    "Client-side web development",
+                    "Database management",
+                    "Network programming"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 2,
+                question: "Which keyword is used to declare variables in JavaScript?",
+                options: [
+                    "var, let, const",
+                    "variable, let, constant",
+                    "v, l, c",
+                    "int, float, string"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 3,
+                question: "Which method is used to add an element at the end of an array?",
+                options: [
+                    "push()",
+                    "append()",
+                    "addToEnd()",
+                    "insertLast()"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 4,
+                question: "What does DOM stand for?",
+                options: [
+                    "Document Object Model",
+                    "Data Object Model",
+                    "Document Oriented Model",
+                    "Digital Object Model"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 5,
+                question: "Which function is used to parse a JSON string?",
+                options: [
+                    "JSON.parse()",
+                    "JSON.stringify()",
+                    "JSON.decode()",
+                    "JSON.fromString()"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 6,
+                question: "What is the correct way to write a JavaScript array?",
+                options: [
+                    "var colors = (1:'red', 2:'green', 3:'blue')",
+                    "var colors = ['red', 'green', 'blue']",
+                    "var colors = 'red', 'green', 'blue'",
+                    "var colors = {red, green, blue}"
+                ],
+                correctAnswer: 1
+            },
+            {
+                id: 7,
+                question: "Which event occurs when a user clicks on an HTML element?",
+                options: [
+                    "onmouseover",
+                    "onchange",
+                    "onclick",
+                    "onmouseclick"
+                ],
+                correctAnswer: 2
+            },
+            {
+                id: 8,
+                question: "What is the correct JavaScript syntax to change the content of an HTML element?",
+                options: [
+                    "document.getElementById('demo').innerHTML = 'Hello'",
+                    "document.getElement('demo').innerHTML = 'Hello'",
+                    "#demo.innerHTML = 'Hello'",
+                    "document.getElementByName('demo').innerHTML = 'Hello'"
+                ],
+                correctAnswer: 0
+            },
+            {
+                id: 9,
+                question: "How do you write 'Hello World' in an alert box?",
+                options: [
+                    "msgBox('Hello World')",
+                    "alertBox('Hello World')",
+                    "msg('Hello World')",
+                    "alert('Hello World')"
+                ],
+                correctAnswer: 3
+            },
+            {
+                id: 10,
+                question: "How do you create a function in JavaScript?",
+                options: [
+                    "function myFunction()",
+                    "function = myFunction()",
+                    "function:myFunction()",
+                    "create myFunction()"
+                ],
+                correctAnswer: 0
+            }
+        ];
+
+        // Global variables
+        let mediaRecorder;
+        let recordedChunks = [];
+        let timer;
+        let timeLeft = 5 * 60; // 5 minutes in seconds
+        let selectedQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let userEmail = "";
+        let recordingTimestamp; // Add this global variable for the timestamp
+        let jobId; // Add this global variable for the job ID
+
+        // DOM Elements
+        const welcomePage = document.getElementById('welcomePage');
+        const quizContainer = document.getElementById('quizContainer');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const startTestBtn = document.getElementById('startTestBtn');
+        const endTestBtn = document.getElementById('endTestBtn');
+        const timerElement = document.getElementById('timer');
+        const webcamVideo = document.getElementById('webcamVideo');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const scoreElement = document.getElementById('score');
+        const resultSummary = document.getElementById('resultSummary');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const emailInput = document.getElementById('emailInput');
+        const userEmailDisplay = document.getElementById('userEmail');
+        
+        // Custom Alert Elements
+        const customAlertOverlay = document.getElementById('customAlertOverlay');
+        const customAlertMessage = document.getElementById('customAlertMessage');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        // Custom Ok Alert Elements
+        const customAlertOkOverlay = document.getElementById('customAlertOkOverlay');
+        const customAlertOkMessage = document.getElementById('customAlertOkMessage');
+        const okBtn = document.getElementById('okBtn');
+
+        // Custom alert functions
+        function showCustomAlert(message, onConfirm, onCancel) {
+            customAlertMessage.textContent = message;
+            customAlertOverlay.style.display = 'flex';
+            
+            // Set up event handlers for the buttons
+            confirmBtn.onclick = () => {
+                hideCustomAlert();
+                if (onConfirm) onConfirm();
+            };
+            
+            cancelBtn.onclick = () => {
+                hideCustomAlert();
+                if (onCancel) onCancel();
+            };
+        }
+
+        function showOkAlert(message, onAcknowledge) {
+            customAlertOkMessage.textContent = message;
+            customAlertOkOverlay.style.display = 'flex';
+            
+            // Set up event handlers for the buttons
+            okBtn.onclick = () => {
+                hideCustomOkAlert();
+                if (onAcknowledge) onAcknowledge();
+            };
+            
+        }
+        
+        function hideCustomAlert() {
+            customAlertOverlay.style.display = 'none';
+        }
+
+        function hideCustomOkAlert() {
+            customAlertOkOverlay.style.display = 'none';
+        }
+
+        // Function to enter fullscreen mode
+        function enterFullscreen() {
+            const element = document.documentElement;
+            
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) { // Firefox
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { // IE/Edge
+                element.msRequestFullscreen();
+            }
+        }
+        
+        // Function to exit fullscreen mode
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+
+        // Function to start the webcam
+        async function startWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                webcamVideo.srcObject = stream;
+                
+                // Start recording with MP4 container format
+                // Note: Most browsers support video/mp4 with codecs like H.264 for MediaRecorder
+                const options = { mimeType: 'video/mp4;codecs=h264' };
+                
+                // If MP4 with H.264 isn't supported, try fallback options
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                    console.log('video/mp4;codecs=h264 is not supported, trying video/mp4');
+                    options.mimeType = 'video/mp4';
+                    
+                    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                        console.log('video/mp4 is not supported, trying video/webm');
+                        options.mimeType = 'video/webm';
+                        
+                        // If all else fails, use default codec
+                        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                            console.log('No supported mimeType found, using default');
+                            delete options.mimeType;
+                        }
+                    }
+                }
+                
+                try {
+                    mediaRecorder = new MediaRecorder(stream, options);
+                } catch (e) {
+                    console.error('MediaRecorder error:', e);
+                    // Fallback to default options
+                    mediaRecorder = new MediaRecorder(stream);
+                }
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.start();
+                return true;
+            } catch (error) {
+                console.error('Error accessing webcam:', error);
+                showOkAlert('Error accessing webcam. Please allow camera access to continue the test.');
+                return false;
+            }
+        }
+
+        // Function to download the recording
+        function downloadRecording() {
+            // Check if we're using MP4 or had to fall back to WebM
+            let fileExtension = 'mp4';
+            if (mediaRecorder.mimeType && mediaRecorder.mimeType.includes('webm')) {
+                fileExtension = 'webm';
+            }
+            
+            const blob = new Blob(recordedChunks, { 
+                type: mediaRecorder.mimeType || 'video/mp4' 
+            });
+            
+            // Use the global timestamp
+            const filename = `quiz-recording-${userEmail.replace('@', '-at-')}-${recordingTimestamp}.${fileExtension}`;
+            
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            
+            // Add to document and trigger download
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Function to stop the webcam recording
+        function stopWebcam() {
+            return new Promise((resolve) => {
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.onstop = () => {
+                        // Create the blob and download it
+                        const blob = new Blob(recordedChunks, { 
+                            type: mediaRecorder.mimeType || 'video/mp4' 
+                        });
+                        
+                        // Use the global timestamp
+                        const fileExtension = mediaRecorder.mimeType && mediaRecorder.mimeType.includes('webm') ? 'webm' : 'mp4';
+                        const filename = `quiz-recording-${userEmail.replace('@', '-at-')}-${recordingTimestamp}.${fileExtension}`;
+                        
+                        // Create download link
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        
+                        // Add to document and trigger download
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        
+                        // Stop all tracks
+                        if (webcamVideo.srcObject) {
+                            const tracks = webcamVideo.srcObject.getTracks();
+                            tracks.forEach(track => track.stop());
+                            webcamVideo.srcObject = null;
+                        }
+                        
+                        resolve();
+                    };
+                    
+                    mediaRecorder.stop();
+                } else {
+                    resolve();
+                }
+            });
+        }
+
+        // Function to update the timer
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const seconds = (timeLeft % 60).toString().padStart(2, '0');
+            timerElement.textContent = `${minutes}:${seconds}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                endTest();
+            } else {
+                timeLeft--;
+            }
+        }
+
+        // Function to select random questions
+        function selectRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            const currentQuestion = selectedQuestions[currentQuestionIndex];
+            questionNumber.textContent = `Question ${currentQuestionIndex + 1}`;
+            questionText.textContent = currentQuestion.question;
+            
+            // Clear options
+            optionsContainer.innerHTML = '';
+            
+            // Add options
+            currentQuestion.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (userAnswers[currentQuestionIndex] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update button states - disable Previous on first question and Next on last question
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.disabled = currentQuestionIndex === selectedQuestions.length - 1;
+        }
+
+        // Function to select an option
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Update UI
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        // Function to navigate to the previous question
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        // Function to navigate to the next question
+        function goToNextQuestion() {
+            if (currentQuestionIndex < selectedQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        // Function to calculate the score
+        function calculateScore() {
+            let score = 0;
+            selectedQuestions.forEach((question, index) => {
+                if (userAnswers[index] === question.correctAnswer) {
+                    score++;
+                }
+            });
+            return score;
+        }
+
+        // Function to display results
+        function displayResults() {
+            const score = calculateScore();
+            scoreElement.textContent = `${score}/${selectedQuestions.length}`;
+            userEmailDisplay.textContent = userEmail;
+            
+            resultSummary.innerHTML = '';
+            selectedQuestions.forEach((question, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                const isCorrect = userAnswers[index] === question.correctAnswer;
+                if (isCorrect) {
+                    resultItem.classList.add('correct');
+                } else {
+                    resultItem.classList.add('incorrect');
+                }
+                
+                resultItem.innerHTML = `
+                    <p><strong>Question ${index + 1}:</strong> ${question.question}</p>
+                    <p>Your answer: ${userAnswers[index] !== undefined ? question.options[userAnswers[index]] : 'Not answered'}</p>
+                    <p>Correct answer: ${question.options[question.correctAnswer]}</p>
+                `;
+                
+                resultSummary.appendChild(resultItem);
+            });
+        }
+
+        // Function to end the test
+        async function endTest() {
+            // Stop the timer
+            clearInterval(timer);
+            
+            // Stop webcam recording and wait for it to complete
+            await stopWebcam();
+            
+            // Calculate score
+            const score = calculateScore();
+            
+            // Use the global timestamp
+            const fileExtension = mediaRecorder.mimeType && mediaRecorder.mimeType.includes('webm') ? 'webm' : 'mp4';
+            const videoFileName = `quiz-recording-${userEmail.replace('@', '-at-')}-${recordingTimestamp}.${fileExtension}`;
+            
+            console.log(score)
+            console.log(videoFileName)
+
+            try {
+                // Wait a short moment to ensure the download has started
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Then send the video path and score to our server
+                const response = await fetch('http://localhost:5000/process-test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        video_path: videoFileName,
+                        test_score: score,
+                        user_email: userEmail,
+                        job_id: jobId
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+
+                console.log(result)
+                
+                if (result.status === 'success') {
+                    showOkAlert(`Test completed! Your score: ${score}\nProcessing results...`);
+                } else {
+                    showOkAlert(`Test completed! Your score: ${score}\nError processing results: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error sending results:', error);
+                showOkAlert(`Test completed! Your score: ${score}\nError processing results. Please contact support.`);
+            }
+            
+            // Exit fullscreen
+            exitFullscreen();
+
+            quizContainer.style.display = 'none';
+
+            displayResults();
+
+            resultsContainer.style.display = 'block';
+        }
+
+        // Function to validate email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Function to get job ID from URL
+        function getjobId() {
+            const path = window.location.pathname;
+            console.log(path);
+            const match = path.match(/\/round1\/([a-zA-Z0-9]+)/);
+            if (match) {
+                jobId = match[1];
+                console.log('Job ID:', jobId);
+                return jobId;
+            }
+            console.error('No job ID found in URL');
+            return null;
+        }
+
+        // Event listener for the Start Test button
+        startTestBtn.addEventListener('click', async () => {
+            // Get job ID from URL
+            jobId = getjobId();
+            if (!jobId) {
+                showOkAlert('Invalid job ID. Please check the URL.');
+                return;
+            }
+
+            // Validate email
+            userEmail = emailInput.value.trim();
+            if (!validateEmail(userEmail)) {
+                showOkAlert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Generate timestamp when starting the test
+            recordingTimestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            
+            // Start webcam
+            const webcamStarted = await startWebcam();
+            if (!webcamStarted) return;
+            
+            // Enter fullscreen mode
+            enterFullscreen();
+            
+            // Select random questions
+            selectedQuestions = selectRandomQuestions(2);
+            
+            // Initialize user answers
+            userAnswers = Array(selectedQuestions.length).fill(undefined);
+            
+            // Hide welcome page and show quiz container
+            welcomePage.style.display = 'none';
+            quizContainer.style.display = 'block';
+            
+            // Display the first question
+            currentQuestionIndex = 0;
+            displayQuestion();
+            
+            // Start the timer
+            timer = setInterval(updateTimer, 1000);
+        });
+
+        // Event listener for the End Test button
+        endTestBtn.addEventListener('click', () => {
+            showCustomAlert('Are you sure you want to end the test?', endTest);
+        });
+
+        // Event listeners for navigation buttons
+        prevBtn.addEventListener('click', goToPreviousQuestion);
+        nextBtn.addEventListener('click', goToNextQuestion);
+
+        // Event listener for the Download Recording button
+        downloadBtn.addEventListener('click', downloadRecording);
+        
+        // Event listener for fullscreen change
+        document.addEventListener('fullscreenchange', () => {
+            // If we exit fullscreen during the test, prompt to return
+            if (!document.fullscreenElement && quizContainer.style.display === 'block') {
+                showCustomAlert('Fullscreen mode is required for this test. Please return to fullscreen mode.', enterFullscreen);
+            }
+        });
+        
+        // Also handle browser-specific fullscreen change events
+        document.addEventListener('webkitfullscreenchange', () => {
+            if (!document.webkitFullscreenElement && quizContainer.style.display === 'block') {
+                showCustomAlert('Fullscreen mode is required for this test. Please return to fullscreen mode.', enterFullscreen);
+            }
+        });
+        
+        document.addEventListener('mozfullscreenchange', () => {
+            if (!document.mozFullScreenElement && quizContainer.style.display === 'block') {
+                showCustomAlert('Fullscreen mode is required for this test. Please return to fullscreen mode.', enterFullscreen);
+            }
+        });
+        
+        document.addEventListener('MSFullscreenChange', () => {
+            if (!document.msFullscreenElement && quizContainer.style.display === 'block') {
+                showCustomAlert('Fullscreen mode is required for this test. Please return to fullscreen mode.', enterFullscreen);
+            }
+        });
+    </script>
+</body>
+</html>
