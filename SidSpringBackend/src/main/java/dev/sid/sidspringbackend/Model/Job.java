@@ -2,6 +2,8 @@ package dev.sid.sidspringbackend.Model;
 
 
 import dev.sid.sidspringbackend.POJOs.CandidateRank;
+import dev.sid.sidspringbackend.POJOs.OralTestResults;
+import dev.sid.sidspringbackend.POJOs.TechTestResults;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,10 @@ public class Job {
     private String jobTitle;
     private String jobDescription;
 //    private List<String> candidates;
-    private List<CandidateRank> allCandidatesRanking;
+    private List<CandidateRank> allCandidatesRankingPhase1;
+    private List<TechTestResults> allTechTestResults;
+    private List<OralTestResults> allOralTestResults;
+    private int phase;
     private boolean isOpenPosition;
 
     private LocalDateTime jobPostingDate;
