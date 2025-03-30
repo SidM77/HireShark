@@ -66,7 +66,7 @@ public class JobService {
         Optional<Job> job = findJobByHumanReadableJobId(humanReadableJobId);
 
         job.ifPresent(j -> {
-            j.setAllCandidatesRanking(candidateRankList);
+            j.setAllCandidatesRankingPhase1(candidateRankList);
             jobRepository.save(j);
         });
 
