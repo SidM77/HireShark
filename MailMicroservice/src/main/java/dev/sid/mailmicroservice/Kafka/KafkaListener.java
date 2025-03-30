@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 @Component
 public class KafkaListener {
 
@@ -55,6 +54,32 @@ public class KafkaListener {
         String email = jsonNode.get("email").asText();
         String id = jsonNode.get("id").asText();
         sendEmailService.sendEmail(email, "Please use this link to give Round-1 of the test http://localhost:5000/round1/"+ id , "Invitation to Interview Round 1");
+    }
+
+    @org.springframework.kafka.annotation.KafkaListener(topics="richOralTestTopic", groupId = "groupId")
+    public void listenerRichSidOralTestLink(String message) throws JsonProcessingException {
+        System.out.println("Listener received for richOralTest "+message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(message);
+
+        String email = jsonNode.get("email").asText();
+        String id = jsonNode.get("id").asText();
+        String jobId = jsonNode.get("jobId").asText();
+        sendEmailService.sendEmail(email, "Congratulations on clearing Round-1. Please use this link to give Round 2 of the test http://localhost:5174/richRound2/"+ jobId , "Invitation to Interview Round 2");
+    }
+
+    @org.springframework.kafka.annotation.KafkaListener(topics="richTechnicalTestTopic", groupId = "groupId")
+    public void listenerRichKrishTechnicalTestLink(String message) throws JsonProcessingException {
+        System.out.println("Listener received for richTechnicalTest "+message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(message);
+
+        String email = jsonNode.get("email").asText();
+        String id = jsonNode.get("id").asText();
+        String jobId = jsonNode.get("jobId").asText();
+        sendEmailService.sendEmail(email, "Please use this link to give Round 1  http://localhost:5000/round1/"+ jobId , "Invitation to Interview Round 1");
     }
 
 
