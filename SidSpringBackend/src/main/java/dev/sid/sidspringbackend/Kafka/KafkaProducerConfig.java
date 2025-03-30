@@ -37,4 +37,14 @@ public class KafkaProducerConfig {
         return new KafkaTemplate<>(producerFactory());
     }
 
+    @Bean
+    public ProducerFactory<String, RichMessageRequest> richProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfig());
+    }
+
+    @Bean
+    public KafkaTemplate<String, RichMessageRequest> richKafkaTemplate() {
+        return new KafkaTemplate<>(richProducerFactory());
+    }
+
 }
