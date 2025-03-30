@@ -2,12 +2,11 @@ package dev.sid.sidspringbackend.Service;
 
 import dev.sid.sidspringbackend.Model.Job;
 import dev.sid.sidspringbackend.POJOs.CandidateRank;
+import dev.sid.sidspringbackend.POJOs.OralTestResults;
 import dev.sid.sidspringbackend.Repository.JobRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class JobService {
