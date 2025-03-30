@@ -17,4 +17,14 @@ public class KafkaTopicConfig {
     public NewTopic technicalTestTopic() {
         return TopicBuilder.name("technicalTestTopic").build();
     }
+
+    @Bean
+    public NewTopic richOralTestTopic() {
+        return TopicBuilder.name("richOralTestTopic").build();
+    }
+
+    @Bean
+    public NewTopic richTechnicalTopic() {
+        return TopicBuilder.name("richTechnicalTestTopic").build();
+    }
 }
