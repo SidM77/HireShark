@@ -1,8 +1,9 @@
 import "regenerator-runtime";
 import "./App.css"
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import TestRound1 from "@/TestRound1.jsx";
+import TestRound2 from "@/TestRound2.jsx";
 import CandidateOverview from "@/CandidateOverview.jsx";
+import RichRound2 from "@/RichRound2.jsx";
 
 // const PREPARE_TIME = 1;
 // const ANSWER_TIME = 5;
