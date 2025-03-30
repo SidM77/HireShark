@@ -72,4 +72,39 @@ public class JobService {
 
         return job;
     }
+
+
+    public String updateOrCreateOralTestResult(String email, Map<String, String> questions, Map<String, String> answers, String jobId) {
+        // Find the job document by jobId
+        Optional<Job> optionalJob = jobRepository.findByHumanReadableJobId(jobId);
+
+        // Check if job is present
+        if (optionalJob.isEmpty()) {
+            return "Job not found";
+        }
+
+        // Get the job object from the Optional
+        Job job = optionalJob.get();
+
+        // Find existing OralTestResults entry by senderEmail
+        OralTestResults existingResult = job.getAllOralTestResults().stream()
+                .filter(result -> result.getSenderEmail().equals(email))
+                .findFirst()
+                .orElse(null);
+
+        if (existingResult != null) {
+            // Update the existing entry with new questions and answers
+            existingResult.setQuestions(questions);
+            existingResult.setAnswers(answers);
+        } else {
+            // Create new OralTestResults entry and add it to the list
+            OralTestResults newResult = new OralTestResults(email, questions, answers);
+            job.getAllOralTestResults().add(newResult);
+        }
+
+        // Save the updated job document back to the database
+        jobRepository.save(job);
+
+        return "Answers updated successfully";
+    }
 }
