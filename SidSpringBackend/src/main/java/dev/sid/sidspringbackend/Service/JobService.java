@@ -23,6 +23,8 @@ public class JobService {
         String humanReadableJobId = "JX" + getBase36(5);
         job.setHumanReadableJobId(humanReadableJobId);
         job.setOpenPosition(true);
+        job.setPhase(1);
+        job.setAllOralTestResults(new ArrayList<OralTestResults>());
         return jobRepository.save(job);
     }
 
