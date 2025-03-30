@@ -5,15 +5,15 @@ import {Input} from "@/components/ui/input.jsx";
 import {Button} from "@/components/ui/button.jsx";
 
 
-const PREPARE_TIME = 10;
-const ANSWER_TIME = 10;
+const PREPARE_TIME = 2;
+const ANSWER_TIME = 2;
 
 const questions = {
   1: "What is the most important learning from your experience in backend development?",
   2: "How do you keep yourself up to date with Modern Tech?"
 };
 
-function TestRound1() {
+function TestRound2() {
 
   const [phase, setPhase] = useState('name');
   const [name, setName] = useState('');
@@ -186,4 +186,4 @@ function TestRound1() {
   );
 }
 
-export default TestRound1;
+export default TestRound2;
