@@ -1,13 +1,15 @@
-import { Candidate, columns } from './Columns'
-import { DataTable } from './data_table';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+
 import { Job } from '../AllJobs/AllJobsPage';
 import Stepper from '@/components/custom/Stepper';
+import Phase1Page from '../Phases/Phase1/Phase1Page';
+import Phase2Page from '../Phases/Phase2/Phase2Page';
+
+export interface Phase {
+    stepId: number;
+    label: string;
+}
 
 export default function Dashboard() {
 
@@ -31,107 +33,47 @@ export default function Dashboard() {
         fetchSpecificJobData(humanReadableJobId);
     }, []);
 
-    let ogData: Candidate[] = [
-        {
-            id: "pqr",
-            senderEmail: "pqr@gmail.com",
-            resumeScore: 85,
-            isActive: true
-        },
-        {
-            id: "abc",
-            senderEmail: "abc@gmail.com",
-            resumeScore: 92,
-            isActive: true
-        },
-        {
-            id: "rst",
-            senderEmail: "rst@gmail.com",
-            resumeScore: 77,
-            isActive: true
-        },
-        {
-            id: "xyz",
-            senderEmail: "xyz@gmail.com",
-            resumeScore: 73,
-            isActive: true
-        },
-        {
-            id: "spq",
-            senderEmail: "spq@gmail.com",
-            resumeScore: 78,
-            isActive: true
+    const phaseInfo: Phase[] = [
+            {
+                stepId: 1,
+                label: "AI Ranking of Candidates"
+            },
+            {
+                stepId: 2,
+                label: "Send Link for Round 1"
+            },
+            {
+                stepId: 3,
+                label: "Send Link for Round 2"
+            },
+            {
+                stepId: 4,
+                label: "Send Link for Interview"
+            }
+        ]
+
+    let currentPhase: number = 1;
+    const renderPhaseComponent = () => {
+        switch(currentPhase) {
+            case 1:
+                return <Phase1Page />;
+            case 2: 
+                return <Phase2Page />;
         }
-    ];
-
-    const [selectMode, setSelectMode] = useState<"topX" | "minScore">("topX");
-    const [topX, setTopX] = useState<number | null>(null);
-    const [minScore, setMinScore] = useState<number | null>(null);
-    const [data, setData] = useState<Candidate[]>(ogData);
-
-    const handleEliminate = () => {
-        let updatedData = [...data].sort((a, b) => b.resumeScore - a.resumeScore);
-
-        if (selectMode == "topX" && topX !== null && topX > 0) {
-            updatedData = updatedData.map((candidate, index) => ({
-                ...candidate,
-                isActive: index < topX, // Only keep top X active
-            }));
-        } else if (selectMode == "minScore" && minScore !== null && minScore > 0) {
-            updatedData = updatedData.map((candidate) => ({
-                ...candidate,
-                isActive: candidate.resumeScore >= minScore, // Keep candidates with score >= minScore
-            }));
-        }
-
-        setData(updatedData);
     }
+    
 
     return (
-        <section className="py-10">
+        <div className="">
 
-            <div className='my-5'>
-                <Stepper currentStep={1} numberOfSteps={5}/>
-                <div className='flex justify-between mt-3'>
-                    <Button>Previous step</Button>
-                    <Button>Next step</Button>
-                </div>
+            <div className='mb-5'>
+                <Stepper currentStep={1} numberOfSteps={4} phaseInfo={phaseInfo} />
             </div>
 
-            <h2 className="text-lg font-semibold">Candidate Selection</h2>
-
-            <RadioGroup
-                value={selectMode}
-                onValueChange={(value) => setSelectMode(value as "topX" | "minScore")}
-                className='flex'
-            >
-                <Label className="flex items-center gap-2">
-                    <RadioGroupItem value="topX" /> Select Top X Candidates
-                </Label>
-                <Label className="flex items-center gap-2">
-                    <RadioGroupItem value="minScore" /> Select Candidates with Score ≥ Y%
-                </Label>
-            </RadioGroup>
-
-            {/* <div className="flex gap-2">
-                <Input
-                    type="number"
-                    placeholder="Enter number of candidates to proceed"
-                    value={topX}
-                    onChange={(e) => setTopX(Number(e.target.value))}
-                    className="w-64"
-                />
-                <span>OR</span>
-                <Input
-                    type='number'
-                    placeholder='Enter minimum resume score %'
-                    value={minScore ?? ""}
-                    onChange={(e) => setMinScore(Number(e.target.value))}
-                    className='w-64'
-                />
-                <Button onClick={handleEliminate}>Eliminate Rest</Button>
-            </div> */}
-            <DataTable columns={columns} data={data} />
-        </section>
+            <div>
+                {renderPhaseComponent()}
+            </div>
+            
+        </div>
     )
 }
