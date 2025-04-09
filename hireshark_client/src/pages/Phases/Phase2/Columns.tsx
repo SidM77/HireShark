@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { boolean } from "zod"
 
 
 // This type is used to define the shape of our data.
@@ -49,4 +50,12 @@ export const columns: ColumnDef<Phase1_Result>[] = [
         accessorKey: "summary",
         header: "Summary",
     },
+    // {
+    //     header: "Status",
+    //     cell: ({ row }) => {
+    //         <span className={row.original.isActive ? "text-green-600" : "text-red-500"}>
+    //              {row.original.isActive ? "Active" : "Eliminated"}
+    //         </span>
+    //     }
+    // }
 ]

@@ -5,6 +5,7 @@ import { Job } from '../AllJobs/AllJobsPage';
 import Stepper from '@/components/custom/Stepper';
 import Phase1Page from './Phase1/Phase1Page';
 import Phase2Page from './Phase2/Phase2Page';
+import Phase3Page from './Phase3/Phase3Page';
 
 import { Phase1_Result } from './Phase2/Columns';
 
@@ -58,7 +59,9 @@ export default function Dashboard() {
 
     //phase2 result return function
     const Phase2_Submission = async () => {
-        
+        // still need to work out the data transfer part
+
+        setCurrPhase(currPhase+1);
     }
 
     useEffect(() => {
@@ -89,7 +92,9 @@ export default function Dashboard() {
             case 1:
                 return <Phase1Page onSubmission={Phase1_Submission} />;
             case 2: 
-                return <Phase2Page Phase1_Result_data={phase2_InitialData}/>;
+                return <Phase2Page Phase1_Result_data={phase2_InitialData} onSubmission={Phase2_Submission} />;
+            case 3:
+                return <Phase3Page />
         }
     }
     
