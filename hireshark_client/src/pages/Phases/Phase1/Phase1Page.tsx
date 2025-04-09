@@ -1,40 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import { CandidateP1, columns } from './Columns';
+import { columns } from './Columns';
 import { DataTable } from '@/components/data-table';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
+import { Candidate } from '@/pages/Scratch/Columns';
 
 function Phase1Page() {
-    let dummyData: CandidateP1[] = [
-        {
-            id: "pqr",
-            senderEmail: "pqr@gmail.com",
-            isActive: true
-        },
-        {
-            id: "abc",
-            senderEmail: "abc@gmail.com",
-            isActive: true
-        },
-        {
-            id: "rst",
-            senderEmail: "rst@gmail.com",
-            isActive: true
-        },
-        {
-            id: "xyz",
-            senderEmail: "xyz@gmail.com",
-            isActive: true
-        },
-        {
-            id: "spq",
-            senderEmail: "spq@gmail.com",
-            isActive: true
-        }
-    ];
 
-    const [data, setData] = useState<CandidateP1[]>(dummyData);
+    const [data, setData] = useState<Candidate[]>([]);
+
+    async function getData() {
+        const res = await fetch(
+            'http://localhost:8080/api/v1/getInfoWithoutResumePDF/all',
+            {
+                method: 'GET',
+            }
+        );
+        const resp = await res.json();
+        console.log(resp)
+        setData(resp);
+    }
+
+    // dummy function to simulate submission of candidate profiles to deepseek
+    const handleSubmitPhase1 = () => {
+        console.log("resumes submitted to deepseek")
+    }
+
+    useEffect(() => {
+        getData();
+    }, []);
+
     return (
         <div className='flex flex-col items-center'>
             <div className='text-center w-3/4'>
@@ -44,7 +40,11 @@ function Phase1Page() {
                 </p>
             </div>
             <div className='flex flex-row w-2/5 justify-between my-4'>
-                <Button className='bg-green-700 hover:bg-green-500'>Submit Resumes</Button>
+                <Button 
+                    className='bg-green-700 hover:bg-green-500'
+                    onClick={handleSubmitPhase1}>
+                        Submit Resumes
+                </Button>
                 <Button>Update Job Description</Button>
             </div>
             <div>
