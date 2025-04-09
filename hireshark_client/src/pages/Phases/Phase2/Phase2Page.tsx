@@ -1,53 +1,24 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { DataTable } from '@/components/data-table';
-import { Candidate, columns } from './Columns';
+import { Phase1_Result, columns } from './Columns';
 
-function Phase2Page() {
+type Phase2PageProps = {
+    Phase1_Result_data: Phase1_Result[];
+}
 
-    let ogData: Candidate[] = [
-        {
-            id: "pqr",
-            senderEmail: "pqr@gmail.com",
-            resumeScore: 85,
-            isActive: true
-        },
-        {
-            id: "abc",
-            senderEmail: "abc@gmail.com",
-            resumeScore: 92,
-            isActive: true
-        },
-        {
-            id: "rst",
-            senderEmail: "rst@gmail.com",
-            resumeScore: 77,
-            isActive: true
-        },
-        {
-            id: "xyz",
-            senderEmail: "xyz@gmail.com",
-            resumeScore: 73,
-            isActive: true
-        },
-        {
-            id: "spq",
-            senderEmail: "spq@gmail.com",
-            resumeScore: 78,
-            isActive: true
-        }
-    ];
+function Phase2Page({ Phase1_Result_data }: Phase2PageProps) {
 
     const [selectMode, setSelectMode] = useState<"topX" | "minScore">("topX");
     const [topX, setTopX] = useState<number | null>(null);
     const [minScore, setMinScore] = useState<number | null>(null);
-    const [data, setData] = useState<Candidate[]>(ogData);
+    const [data, setData] = useState<Phase1_Result[]>(Phase1_Result_data);
 
     const handleEliminate = () => {
-        let updatedData = [...data].sort((a, b) => b.resumeScore - a.resumeScore);
+        let updatedData = [...data].sort((a, b) => b.score - a.score);
 
         if (selectMode == "topX" && topX !== null && topX > 0) {
             updatedData = updatedData.map((candidate, index) => ({
@@ -57,7 +28,7 @@ function Phase2Page() {
         } else if (selectMode == "minScore" && minScore !== null && minScore > 0) {
             updatedData = updatedData.map((candidate) => ({
                 ...candidate,
-                isActive: candidate.resumeScore >= minScore, // Keep candidates with score >= minScore
+                isActive: candidate.score >= minScore, // Keep candidates with score >= minScore
             }));
         }
 

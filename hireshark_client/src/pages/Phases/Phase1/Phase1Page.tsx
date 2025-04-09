@@ -6,7 +6,12 @@ import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { Candidate } from '@/pages/Scratch/Columns';
 
-function Phase1Page() {
+// this is new and i so donot understand TYPESCRIPT
+type Phase1PageProps = {
+    onSubmission: () => void;
+}
+
+function Phase1Page({ onSubmission }: Phase1PageProps) {
 
     const [data, setData] = useState<Candidate[]>([]);
 
@@ -24,6 +29,7 @@ function Phase1Page() {
 
     // dummy function to simulate submission of candidate profiles to deepseek
     const handleSubmitPhase1 = () => {
+        onSubmission();
         console.log("resumes submitted to deepseek")
     }
 

@@ -8,20 +8,19 @@ import { Button } from "@/components/ui/button"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Candidate = {
-    id: string
-    senderEmail: string
-    resumeScore: number
-    isActive: boolean
+export type Phase1_Result = {
+    email: string;
+    score: number;
+    summary: string;
 }
 
 // const handlePDFview = (candidateEmail: string) => {
 //     window.open(`http://localhost:8080/api/v1/getPDF/${candidateEmail}`, '_blank');
 // }
 
-export const columns: ColumnDef<Candidate>[] = [
+export const columns: ColumnDef<Phase1_Result>[] = [
     {
-        accessorKey: "senderEmail",
+        accessorKey: "email",
         header: "Email"
     },
     // {
@@ -29,7 +28,7 @@ export const columns: ColumnDef<Candidate>[] = [
     //     header: "Resume",
     // },
     {
-        accessorKey: "resumeScore",
+        accessorKey: "score",
         header: ({ column }) => {
             return (
               <Button
@@ -42,20 +41,12 @@ export const columns: ColumnDef<Candidate>[] = [
             );
           },
         sortingFn: (rowA, rowB) => {
-            if (rowA.original.isActive === rowB.original.isActive) {
-                return rowB.original.resumeScore - rowA.original.resumeScore;
-            }
-            return rowA.original.isActive ? -1 : 1;
+                return rowB.original.score - rowA.original.score;
         },
 
     },
     {
-        accessorKey: "isActive",
-        header: "Status",
-        cell: ({ row }) => (
-            <span className={row.original.isActive ? "text-green-600" : "text-red-500"}>
-                {row.original.isActive ? "Active" : "Eliminated"}
-            </span>
-        ),
+        accessorKey: "summary",
+        header: "Summary",
     },
 ]
