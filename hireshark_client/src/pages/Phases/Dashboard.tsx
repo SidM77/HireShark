@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { Job } from '../AllJobs/AllJobsPage';
 import Stepper from '@/components/custom/Stepper';
-import Phase1Page from '../Phases/Phase1/Phase1Page';
-import Phase2Page from '../Phases/Phase2/Phase2Page';
+import Phase1Page from './Phase1/Phase1Page';
+import Phase2Page from './Phase2/Phase2Page';
 
 export interface Phase {
     stepId: number;
