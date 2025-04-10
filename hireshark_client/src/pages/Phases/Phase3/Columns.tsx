@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Phase3_Result = {
+export type Phase2_Result = {
     senderEmail: string;
     audioCheatCount: number;
     isCheating: boolean;
@@ -22,7 +22,7 @@ export type Phase3_Result = {
 //     window.open(`http://localhost:8080/api/v1/getPDF/${candidateEmail}`, '_blank');
 // }
 
-export const columns: ColumnDef<Phase3_Result>[] = [
+export const columns: ColumnDef<Phase2_Result>[] = [
     {
         accessorKey: "senderEmail",
         header: "Email"

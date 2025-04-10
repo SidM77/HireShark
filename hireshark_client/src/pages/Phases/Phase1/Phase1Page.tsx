@@ -8,10 +8,11 @@ import { Candidate } from '@/pages/Scratch/Columns';
 
 // this is new and i so donot understand TYPESCRIPT
 type Phase1PageProps = {
+    jobId: string;
     onSubmission: () => void;
 }
 
-function Phase1Page({ onSubmission }: Phase1PageProps) {
+function Phase1Page({ jobId, onSubmission }: Phase1PageProps) {
 
     const [data, setData] = useState<Candidate[]>([]);
 
@@ -23,7 +24,6 @@ function Phase1Page({ onSubmission }: Phase1PageProps) {
             }
         );
         const resp = await res.json();
-        console.log(resp)
         setData(resp);
     }
 

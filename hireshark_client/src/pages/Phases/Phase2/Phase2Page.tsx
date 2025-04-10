@@ -17,17 +17,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Phase1_Result, columns } from './Columns';
 
 type Phase2PageProps = {
+    jobId: string;
     Phase1_Result_data: Phase1_Result[];
     onSubmission: () => void;
 }
 
-function Phase2Page({ Phase1_Result_data, onSubmission }: Phase2PageProps) {
+function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps) {
 
     const [selectMode, setSelectMode] = useState<"topX" | "minScore">("topX");
     const [topX, setTopX] = useState<number | null>(null);
     const [minScore, setMinScore] = useState<number | null>(null);
     
     const [data, setData] = useState<Phase1_Result[]>(Phase1_Result_data);
+    const [submissionData, setSubmissionData] = useState<any[]>([]);
 
     const handleEliminate = () => {
         let sortedData:Phase1_Result[] = [...Phase1_Result_data].sort((a, b) => b.score - a.score);
@@ -39,20 +41,46 @@ function Phase2Page({ Phase1_Result_data, onSubmission }: Phase2PageProps) {
             //     isActive: index < topX
             // }))
             updatedData = sortedData.slice(0,topX);
+            let submission = updatedData.map((candidate) => ({
+                email: candidate.email,
+                id: "0",
+                jobId: jobId,
+            }))
+            setSubmissionData(submission);
+            // console.log(updatedData)
         } else if (selectMode == "minScore" && minScore !== null && minScore > 0) {
             // updatedData = sortedData.map((candidate) => ({
             //     ...candidate,
             //     isActive: candidate.score >= minScore, // Keep candidates with score >= minScore
             // }));
             updatedData = sortedData.filter((candidate) => candidate.score >= minScore);
+            let submission = updatedData.map((candidate) => ({
+                email: candidate.email,
+                id: "0",
+                jobId: jobId,
+            }))
+            setSubmissionData(submission);
         }
 
         setData(updatedData);
     }
 
-    const handleSubmit = () => {
-        // set data to Phase3InitialData in parent
+    const handleSubmit = async () => {
         // need make an POST api call & sending data which will then become Phase3InitialData
+        
+        const res = await fetch('http://localhost:8080/api/v1/rich/sendMultipleTestLink/technicalRound1',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(submissionData)
+            }
+        );
+        console.log(res)
+        // const resp = await res.json();
+        // console.log(resp);
+        // set data to Phase3InitialData in parent
         
         onSubmission();
     }
@@ -98,7 +126,7 @@ function Phase2Page({ Phase1_Result_data, onSubmission }: Phase2PageProps) {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button onClick = {handleSubmit}>Save & Submit</Button>
+                            <Button className='bg-green-700 hover:bg-green-500' onClick = {handleSubmit}>Save & Submit</Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>
@@ -122,7 +150,7 @@ function Phase2Page({ Phase1_Result_data, onSubmission }: Phase2PageProps) {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button onClick={handleSubmit}>Save & Submit</Button>
+                            <Button className='bg-green-700 hover:bg-green-500' onClick={handleSubmit}>Save & Submit</Button>
                         </CardFooter>
                     </Card>
                 </TabsContent>

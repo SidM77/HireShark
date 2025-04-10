@@ -8,41 +8,60 @@ import Phase2Page from './Phase2/Phase2Page';
 import Phase3Page from './Phase3/Phase3Page';
 
 import { Phase1_Result } from './Phase2/Columns';
+import { Phase2_Result } from './Phase3/Columns';
 
 export interface Phase {
     stepId: number;
     label: string;
 }
 
+export interface SpecificJobProcessData extends Job {
+    allCandidatesRankingPhase1: Phase1_Result[],
+    allOralTestResults: any[],
+    allTechTestResults: Phase2_Result[],
+}
+
 export default function Dashboard() {
 
     const [currPhase, setCurrPhase] = useState<number>(1);
+    const [currJobData, setCurrJobData] = useState<SpecificJobProcessData | null>();
 
     // might need these, not too sure
     const [phase2_InitialData, setPhase2_InitialData] = useState<Phase1_Result[]>([]);
-    const [phase3_InitialData, setPhase3_InitialData] = useState([]);
-    const [phase4_InitialData, setPhase4_InitialData] = useState([]);
+    const [phase3_InitialData, setPhase3_InitialData] = useState<Phase2_Result[]>([]);
+    const [phase4_InitialData, setPhase4_InitialData] = useState<any[]>([]);
 
     const location = useLocation();
     let humanReadableJobId = location.state.humanReadableJobId
 
     const fetchSpecificJobData = async (humanReadableJobId: string) => {
+        try {
+            const res = await fetch(`http://localhost:8080/api/v1/findJobById/${humanReadableJobId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
 
-        const res = await fetch(`http://localhost:8080/api/v1/findJobById/${humanReadableJobId}`, {
-            method: 'GET',
-            // headers: {
-            //     'Content-Type': 'application/json',
-            // }
-        })
+            const resp: SpecificJobProcessData = await res.json();
+            
+            setCurrJobData(resp);
+            setCurrPhase(resp.phase);
+            setPhase2_InitialData(resp.allCandidatesRankingPhase1);
+            setPhase3_InitialData(resp.allTechTestResults);
+            setPhase4_InitialData(resp.allOralTestResults);
 
-        const resp: Job = await res.json();
-        // console.log(resp)
+        } catch (error) {
+            console.error("Failed to fetch job data:", error);
+        }
     }
 
     // phase1 result return function
     const Phase1_Submission = async () => {
         // submitting the resumes to DeepSeek
+
         // Taking DeepSeek's response and setting it to phase2InitialData
+        // in this, there should be a body sent having the humanReadableJobId?
         const res = await fetch('http://localhost:8080/api/v1/nextPhase/phase1Dummy', {
             method: 'GET',
             headers: {
@@ -52,16 +71,16 @@ export default function Dashboard() {
         })
         const resp: Phase1_Result[] = await res.json()
         setPhase2_InitialData(resp);
-        
+
         // updating currStep
-        setCurrPhase(currPhase+1);
+        setCurrPhase(currPhase + 1);
     }
 
     //phase2 result return function
     const Phase2_Submission = async () => {
         // still need to work out the data transfer part
 
-        setCurrPhase(currPhase+1);
+        // setCurrPhase(currPhase+1);
     }
 
     useEffect(() => {
@@ -69,35 +88,35 @@ export default function Dashboard() {
     }, []);
 
     const phaseInfo: Phase[] = [
-            {
-                stepId: 1,
-                label: "AI Ranking of Candidates"
-            },
-            {
-                stepId: 2,
-                label: "Send Link for Round 1"
-            },
-            {
-                stepId: 3,
-                label: "Send Link for Round 2"
-            },
-            {
-                stepId: 4,
-                label: "Send Link for Interview"
-            }
-        ]
+        {
+            stepId: 1,
+            label: "AI Ranking of Candidates"
+        },
+        {
+            stepId: 2,
+            label: "Send Link for Round 1"
+        },
+        {
+            stepId: 3,
+            label: "Send Link for Round 2"
+        },
+        {
+            stepId: 4,
+            label: "Send Link for Interview"
+        }
+    ]
 
     const renderPhaseComponent = () => {
-        switch(currPhase) {
+        switch (currPhase) {
             case 1:
-                return <Phase1Page onSubmission={Phase1_Submission} />;
-            case 2: 
-                return <Phase2Page Phase1_Result_data={phase2_InitialData} onSubmission={Phase2_Submission} />;
+                return <Phase1Page jobId={humanReadableJobId} onSubmission={Phase1_Submission} />;
+            case 2:
+                return <Phase2Page jobId={humanReadableJobId} Phase1_Result_data={phase2_InitialData} onSubmission={Phase2_Submission} />;
             case 3:
                 return <Phase3Page />
         }
     }
-    
+
 
     return (
         <div className="">
@@ -109,7 +128,7 @@ export default function Dashboard() {
             <div>
                 {renderPhaseComponent()}
             </div>
-            
+
         </div>
     )
 }
