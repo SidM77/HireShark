@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { DataTable } from '@/components/data-table';
 import {
@@ -42,7 +41,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
             // }))
             updatedData = sortedData.slice(0,topX);
             let submission = updatedData.map((candidate) => ({
-                email: candidate.email,
+                email: candidate.emailId,
                 id: "0",
                 jobId: jobId,
             }))
@@ -55,7 +54,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
             // }));
             updatedData = sortedData.filter((candidate) => candidate.score >= minScore);
             let submission = updatedData.map((candidate) => ({
-                email: candidate.email,
+                email: candidate.emailId,
                 id: "0",
                 jobId: jobId,
             }))
@@ -87,7 +86,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
 
     return (
         <div className='flex flex-col items-center'>
-            <h1 className="text-lg font-semibold">Candidate Selection</h1>
+            <h1 className="text-lg font-semibold">Shortlist Candidates for Technical Test (Round 1)</h1>
 
             <Tabs defaultValue='TopX' className="w-[520px]">
                 <TabsList className="grid w-full grid-cols-2">
@@ -174,7 +173,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
                 />
                 <Button onClick={handleEliminate}>Eliminate Rest</Button>
             </div> */}
-            <div className='w-3/4'>
+            <div>
                 <DataTable columns={columns} data={data} />
             </div>
         </div>

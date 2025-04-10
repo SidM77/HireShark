@@ -2,7 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import { MoreHorizontal, ArrowUpDown } from "lucide-react"
+import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import {ExternalLink, FileText, XCircle} from "lucide-react";
+
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -13,24 +15,37 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Phase2_Result = {
+export type Phase3_Result = {
     senderEmail: string;
-    audioCheatCount: number;
-    cheating: boolean;
-    multipleFacesDetected: false;
-    susSpikeCount: number;
-    testScore: number;
-    totalHeadMovements: number;
+    questions: Record<string, string>;
+    answers: Record<string, string>;
 }
 
 const handlePDFview = (candidateEmail: string) => {
     window.open(`http://localhost:8080/api/v1/getPDF/${candidateEmail}`, '_blank');
 }
 
-export const columns: ColumnDef<Phase2_Result>[] = [
+const handleViewQA = (questions: Record<string, string>, answers: Record<string, string>) => {
+    const qaWindow = window.open('', '_blank');
+    qaWindow?.document.write(`
+      <html>
+        <head><title>Questions & Answers</title></head>
+        <body>
+          <h2>Questions & Answers</h2>
+          ${Object.entries(questions).map(([key, question]) => `
+            <div style="margin-bottom: 20px;">
+              <p><strong>Q${key}:</strong> ${question}</p>
+              <p><strong>A${key}:</strong> ${answers[key]}</p>
+            </div>
+          `).join('')}
+        </body>
+      </html>
+    `);
+};
+
+export const columns: ColumnDef<Phase3_Result>[] = [
     {
         accessorKey: "senderEmail",
         header: "Email"
@@ -40,31 +55,17 @@ export const columns: ColumnDef<Phase2_Result>[] = [
     //     header: "Resume",
     // },
     {
-        accessorKey: "testScore",
-        header: ({ column }) => {
+        header: "View QA",
+        cell: ({ row }) => {
+            const cand = row.original
             return (
                 <Button
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    onClick={() => handleViewQA(cand.questions, cand.answers)}
+                    className="flex items-center gap-2 bg-gray-600"
                 >
-                    Technical Test Score
-                    <ArrowUpDown className={`ml-2 h-4 w-4 ${column.getIsSorted() ? "text-blue-500" : ""}`} />
+                    <ExternalLink className="h-4 w-4" />
+                    View Q&A
                 </Button>
-            );
-        },
-        sortingFn: (rowA, rowB) => {
-            return rowB.original.testScore - rowA.original.testScore;
-        },
-
-    },
-    {
-        accessorKey: "cheating",
-        header: "Cheating",
-        cell: ({ row }) => {
-            return (
-                <span className={row.original.cheating ? "text-red-500" : "text-green-600"}>
-                    {row.original.cheating ? "Possible" : "Not Detected"}
-                </span>
             )
         }
     },
@@ -92,11 +93,11 @@ export const columns: ColumnDef<Phase2_Result>[] = [
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>View Candidate</DropdownMenuItem>
                         <DropdownMenuItem
-                            onClick={() => handlePDFview(cand.senderEmail)}    
+                            onClick={() => handlePDFview(cand.senderEmail)}
                         >View Resume</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
         }
-    } 
+    }
 ]
