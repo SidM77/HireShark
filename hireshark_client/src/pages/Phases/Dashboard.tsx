@@ -83,6 +83,11 @@ export default function Dashboard() {
         setCurrPhase(currPhase+1);
     }
 
+    const Phase3_Submission = () => {
+
+        setCurrPhase(currPhase+1);
+    }
+
     useEffect(() => {
         fetchSpecificJobData(humanReadableJobId);
     }, []);
@@ -113,7 +118,7 @@ export default function Dashboard() {
             case 2:
                 return <Phase2Page jobId={humanReadableJobId} Phase1_Result_data={phase2_InitialData} onSubmission={Phase2_Submission} />;
             case 3:
-                return <Phase3Page />
+                return <Phase3Page jobId={humanReadableJobId} Phase2_Result_data={phase3_InitialData} onSubmission={Phase3_Submission} />
         }
     }
 

@@ -29,6 +29,7 @@ function Phase1Page({ jobId, onSubmission }: Phase1PageProps) {
 
     // dummy function to simulate submission of candidate profiles to deepseek
     const handleSubmitPhase1 = () => {
+
         onSubmission();
         console.log("resumes submitted to deepseek")
     }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { DataTable } from '@/components/data-table';
 import {
@@ -87,7 +86,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
 
     return (
         <div className='flex flex-col items-center'>
-            <h1 className="text-lg font-semibold">Candidate Selection</h1>
+            <h1 className="text-lg font-semibold">Shortlist Candidates for Technical Test (Round 1)</h1>
 
             <Tabs defaultValue='TopX' className="w-[520px]">
                 <TabsList className="grid w-full grid-cols-2">
