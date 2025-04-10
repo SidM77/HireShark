@@ -80,7 +80,7 @@ export default function Dashboard() {
     const Phase2_Submission = async () => {
         // still need to work out the data transfer part
 
-        // setCurrPhase(currPhase+1);
+        setCurrPhase(currPhase+1);
     }
 
     useEffect(() => {
