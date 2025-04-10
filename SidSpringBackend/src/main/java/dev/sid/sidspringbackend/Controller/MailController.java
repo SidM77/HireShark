@@ -17,12 +17,17 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class MailController {
     // Fix Autowiring issue, convert to constructor
-    @Autowired
+
     private RedisTemplate<String, byte[]> redisTemplate;
 
-    public MailController(MailService mailService) {
+    public MailController(RedisTemplate<String, byte[]> redisTemplate, MailService mailService) {
+        this.redisTemplate = redisTemplate;
         this.mailService = mailService;
     }
+
+//    public MailController(MailService mailService) {
+//        this.mailService = mailService;
+//    }
     public MailService mailService;
 
 
