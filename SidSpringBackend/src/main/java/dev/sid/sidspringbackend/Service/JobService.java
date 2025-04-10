@@ -106,4 +106,14 @@ public class JobService {
 
         return "Answers updated successfully";
     }
+
+    public void setPhaseByHumanReadableId(String jobId, int newPhase) {
+        Optional<Job> optionalJob = jobRepository.findByHumanReadableJobId(jobId);
+
+        if (optionalJob.isPresent()) {
+            Job job = optionalJob.get();
+            job.setPhase(newPhase);
+            jobRepository.save(job);
+        }
+    }
 }
