@@ -88,7 +88,8 @@ def shortlist_candidates():
         # store the shortlisted candidates in the job collection with the column name allCandidatesRankingPhase1
         jobs.update_one(
             {'humanReadableJobId': str(job_id)},
-            {'$set': {'allCandidatesRankingPhase1': shortlisted_candidates}}
+            {'$set': {'allCandidatesRankingPhase1': shortlisted_candidates}},
+            {'phase': 2}
         )
 
         print("Updated the job collection with the shortlisted candidates", shortlisted_candidates)
