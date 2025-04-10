@@ -10,7 +10,7 @@ import { boolean } from "zod"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Phase1_Result = {
-    email: string;
+    emailId: string;
     score: number;
     summary: string;
 }
@@ -21,7 +21,7 @@ export type Phase1_Result = {
 
 export const columns: ColumnDef<Phase1_Result>[] = [
     {
-        accessorKey: "email",
+        accessorKey: "emailId",
         header: "Email"
     },
     // {

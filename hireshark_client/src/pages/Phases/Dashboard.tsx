@@ -6,6 +6,7 @@ import Stepper from '@/components/custom/Stepper';
 import Phase1Page from './Phase1/Phase1Page';
 import Phase2Page from './Phase2/Phase2Page';
 import Phase3Page from './Phase3/Phase3Page';
+import Phase4Page from './Phase4/Phase4Page';
 
 import { Phase1_Result } from './Phase2/Columns';
 import { Phase2_Result } from './Phase3/Columns';
@@ -44,7 +45,7 @@ export default function Dashboard() {
             })
 
             const resp: SpecificJobProcessData = await res.json();
-            
+
             setCurrJobData(resp);
             setCurrPhase(resp.phase);
             setPhase2_InitialData(resp.allCandidatesRankingPhase1);
@@ -80,12 +81,17 @@ export default function Dashboard() {
     const Phase2_Submission = async () => {
         // still need to work out the data transfer part
 
-        setCurrPhase(currPhase+1);
+        setCurrPhase(currPhase + 1);
     }
 
     const Phase3_Submission = () => {
 
-        setCurrPhase(currPhase+1);
+        setCurrPhase(currPhase + 1);
+    }
+
+    const Phase4_Submission = () => {
+
+        setCurrPhase(currPhase + 1);
     }
 
     useEffect(() => {
@@ -118,15 +124,22 @@ export default function Dashboard() {
             case 2:
                 return <Phase2Page jobId={humanReadableJobId} Phase1_Result_data={phase2_InitialData} onSubmission={Phase2_Submission} />;
             case 3:
-                return <Phase3Page jobId={humanReadableJobId} Phase2_Result_data={phase3_InitialData} onSubmission={Phase3_Submission} />
+                return <Phase3Page jobId={humanReadableJobId} Phase2_Result_data={phase3_InitialData} onSubmission={Phase3_Submission} />;
+            case 4:
+                return <Phase4Page jobId={humanReadableJobId} Phase3_Result_data={phase4_InitialData} onSubmission={Phase4_Submission} />
         }
     }
 
 
     return (
-        <div className="">
+        <div className="flex flex-col items-center">
+            <div className="bg-white px-6 py-4 rounded-2xl shadow-md border w-5/6 mb-6">
+                <p className="text-3xl font-bold text-gray-800">{currJobData?.jobTitle}</p>
+                <p className="text-md font-medium text-gray-500">Job ID: {humanReadableJobId}</p>
+            </div>
 
-            <div className='mb-5'>
+
+            <div className='mb-5 w-5/6'>
                 <Stepper currentStep={currPhase} numberOfSteps={4} phaseInfo={phaseInfo} />
             </div>
 

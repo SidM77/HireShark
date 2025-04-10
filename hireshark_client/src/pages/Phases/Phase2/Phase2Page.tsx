@@ -41,7 +41,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
             // }))
             updatedData = sortedData.slice(0,topX);
             let submission = updatedData.map((candidate) => ({
-                email: candidate.email,
+                email: candidate.emailId,
                 id: "0",
                 jobId: jobId,
             }))
@@ -54,7 +54,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
             // }));
             updatedData = sortedData.filter((candidate) => candidate.score >= minScore);
             let submission = updatedData.map((candidate) => ({
-                email: candidate.email,
+                email: candidate.emailId,
                 id: "0",
                 jobId: jobId,
             }))
@@ -173,7 +173,7 @@ function Phase2Page({ jobId, Phase1_Result_data, onSubmission }: Phase2PageProps
                 />
                 <Button onClick={handleEliminate}>Eliminate Rest</Button>
             </div> */}
-            <div className='w-3/4'>
+            <div>
                 <DataTable columns={columns} data={data} />
             </div>
         </div>

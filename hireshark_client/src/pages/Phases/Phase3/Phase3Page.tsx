@@ -132,8 +132,9 @@ function Phase3Page({ jobId, Phase2_Result_data, onSubmission }: Phase3PageProps
                   <Input id="X" defaultValue="10" onChange={(e) => setTopX(Number(e.target.value))} />
                 </div>
               </div>
-              <div>
+              <div className='flex flex-row gap-2'>
                 <Button onClick={handleEliminate}>Save</Button>
+                <Button className="bg-purple-800" onClick={() => setData(Phase2_Result_data)}>Reset</Button>
               </div>
             </CardContent>
             <CardFooter>
@@ -156,8 +157,9 @@ function Phase3Page({ jobId, Phase2_Result_data, onSubmission }: Phase3PageProps
                   <Input id="Y" defaultValue="10" onChange={(e) => setMinScore(Number(e.target.value))} />
                 </div>
               </div>
-              <div>
+              <div className='flex flex-row gap-2'>
                 <Button onClick={handleEliminate}>Save</Button>
+                <Button className="bg-purple-800" onClick={() => setData(Phase2_Result_data)}>Reset</Button>
               </div>
             </CardContent>
             <CardFooter>
