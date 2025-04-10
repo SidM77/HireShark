@@ -3,7 +3,7 @@
 // import viteLogo from '/vite.svg'
 import './App.css'
 import TablePage from './pages/Scratch/TablePage'
-import Dashboard from './pages/UploadResumesToJD/Dashboard'
+import Dashboard from './pages/Phases/Dashboard'
 import AllJobsPage from './pages/AllJobs/AllJobsPage';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 

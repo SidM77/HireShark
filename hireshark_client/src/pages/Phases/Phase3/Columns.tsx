@@ -4,24 +4,27 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { boolean } from "zod"
 
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Phase1_Result = {
-    email: string;
-    score: number;
-    summary: string;
+export type Phase2_Result = {
+    senderEmail: string;
+    audioCheatCount: number;
+    isCheating: boolean;
+    multipleFacesDetected: false;
+    susSpikeCount: number;
+    testScore: number;
+    totalHeadMovements: number;
 }
 
 // const handlePDFview = (candidateEmail: string) => {
 //     window.open(`http://localhost:8080/api/v1/getPDF/${candidateEmail}`, '_blank');
 // }
 
-export const columns: ColumnDef<Phase1_Result>[] = [
+export const columns: ColumnDef<Phase2_Result>[] = [
     {
-        accessorKey: "email",
+        accessorKey: "senderEmail",
         header: "Email"
     },
     // {
@@ -29,33 +32,30 @@ export const columns: ColumnDef<Phase1_Result>[] = [
     //     header: "Resume",
     // },
     {
-        accessorKey: "score",
+        accessorKey: "testScore",
         header: ({ column }) => {
             return (
               <Button
                 variant="outline"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               >
-                Resume Score
+                Technical Test Score
                 <ArrowUpDown className={`ml-2 h-4 w-4 ${column.getIsSorted() ? "text-blue-500" : ""}`} />
               </Button>
             );
           },
         sortingFn: (rowA, rowB) => {
-                return rowB.original.score - rowA.original.score;
+                return rowB.original.testScore - rowA.original.testScore;
         },
 
     },
     {
-        accessorKey: "summary",
-        header: "Summary",
-    },
-    // {
-    //     header: "Status",
-    //     cell: ({ row }) => {
-    //         <span className={row.original.isActive ? "text-green-600" : "text-red-500"}>
-    //              {row.original.isActive ? "Active" : "Eliminated"}
-    //         </span>
-    //     }
-    // }
+        accessorKey: "isCheating",
+        header: "Cheating",
+        cell: ({ row }) => {
+            <span className={row.original.isCheating ? "text-red-500" : "text-green-600"}>
+                 {row.original.isCheating ? "Possible" : "Not Detected"}
+            </span>
+        }
+    }
 ]

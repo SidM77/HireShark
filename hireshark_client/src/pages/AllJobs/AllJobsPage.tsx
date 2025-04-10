@@ -8,8 +8,10 @@ export interface Job extends Candidate {
   humanReadableJobId: string;
   jobTitle: string;
   jobDescription: string;
+  jobPostingDate: any;
   candidates: Array<Candidate>;
   openPosition: boolean;
+  phase: number;
   id: any;
 }
 

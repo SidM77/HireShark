@@ -1,5 +1,5 @@
 import React from "react";
-import { Phase } from "@/pages/UploadResumesToJD/Dashboard";
+import { Phase } from "@/pages/Phases/Dashboard";
 
 type StepperProps = {
     currentStep: number;
