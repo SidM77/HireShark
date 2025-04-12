@@ -58,22 +58,8 @@ def ollama_generate(prompt):
 
 # Function to evaluate the resume against the job description
 def evaluate_candidate(resume_content, job_description):
-    prompt = f"""
-Please analyze the following resume in the context of the job description provided. Strictly check every single line in job description and analyze my resume whether there is a match exactly. Strictly maintain high ATS standards and give scores only to the correct ones. Focus on hard skills which are missing and also soft skills which are missing. Provide the following details.:
-1. The match percentage of the resume to the job description. Display this.
-2. Final thoughts on the resume's overall match with the job description in 3 lines.
-Please display in the above order don't mention the numbers like 1. 2. etc and strictly follow ATS standards so that analysis will be accurate. Strictly follow the above templates omg. don't keep changing every time.
-Strictly follow the above things and template which has to be displayed and don't keep changing again and again. Don't fucking change the template from above.
-Title should be Resume analysis and maintain the same title for all. Also if someone uploads the same unchanged resume twice, keep in mind to give the same results. Display new ones only if they have changed their resume according to your suggestions or at least few changes.
-Job Description: {job_description}
-Resume: {resume_content}
-
-Expected Output:
-Matching Score: ""
-Missing Keywords: ""
-Final Thought: ""
-(noting extra shouldn't be mentioned in the output expect above format)
-"""
+    input = os.getenv('PROMPT')
+    prompt = f"{input} Resume: {resume_content} Description: {job_description}"
     return ollama_generate(prompt)
 
 # Parse the resume analysis output
