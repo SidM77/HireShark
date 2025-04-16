@@ -36,26 +36,26 @@ public class MailController {
         return new ResponseEntity<>(mailService.allMails(), HttpStatus.OK);
     }
 
-    @PostMapping("/update-answers")
-    public ResponseEntity<String> updateAnswers(
-            @RequestBody Map<String, Object> requestPayload) {
-
-        // Extract values from the request payload
-        String email = (String) requestPayload.get("name"); // Assuming 'name' is the email
-        Map<String, String> questions = (Map<String, String>) requestPayload.get("questions");
-        Map<String, String> answers = (Map<String, String>) requestPayload.get("answers");
-
-        // Call the service to update the mail document with the questions and answers
-        boolean isUpdated = mailService.updateMailWithAnswers(email, questions, answers);
-
-        if (isUpdated) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Mail updated successfully!");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No mail found for the given email.");
-        }
-    }
+//    @PostMapping("/update-answers")
+//    public ResponseEntity<String> updateAnswers(
+//            @RequestBody Map<String, Object> requestPayload) {
+//
+//        // Extract values from the request payload
+//        String email = (String) requestPayload.get("name"); // Assuming 'name' is the email
+//        Map<String, String> questions = (Map<String, String>) requestPayload.get("questions");
+//        Map<String, String> answers = (Map<String, String>) requestPayload.get("answers");
+//
+//        // Call the service to update the mail document with the questions and answers
+//        boolean isUpdated = mailService.updateMailWithAnswers(email, questions, answers);
+//
+//        if (isUpdated) {
+//            return ResponseEntity.status(HttpStatus.OK)
+//                    .body("Mail updated successfully!");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body("No mail found for the given email.");
+//        }
+//    }
 
     @GetMapping("/getInfoWithoutResumePDF/all")
     public List<Mail> getInfoWithoutResumePDF() {
