@@ -70,6 +70,20 @@ export default function Dashboard() {
                 'Accept': 'application/json'
             }
         })
+
+        // Enable this when we are connected to ritik's server
+        // let body = {
+        //     jobId: currJobData?.humanReadableJobId,
+        // }
+        
+        // const res = await fetch('http://192.168.45.255:5001/analyzeResumes', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     },
+        //     body: JSON.stringify(body)
+        // })
         const resp: Phase1_Result[] = await res.json()
         setPhase2_InitialData(resp);
 
