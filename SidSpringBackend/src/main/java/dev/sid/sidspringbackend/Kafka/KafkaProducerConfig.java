@@ -27,15 +27,15 @@ public class KafkaProducerConfig {
         return props;
     }
 
-    @Bean
-    public ProducerFactory<String, MessageRequest> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfig());
-    }
-
-    @Bean
-    public KafkaTemplate<String, MessageRequest> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
-    }
+//    @Bean
+//    public ProducerFactory<String, MessageRequest> producerFactory() {
+//        return new DefaultKafkaProducerFactory<>(producerConfig());
+//    }
+//
+//    @Bean
+//    public KafkaTemplate<String, MessageRequest> kafkaTemplate() {
+//        return new KafkaTemplate<>(producerFactory());
+//    }
 
     @Bean
     public ProducerFactory<String, RichMessageRequest> richProducerFactory() {
