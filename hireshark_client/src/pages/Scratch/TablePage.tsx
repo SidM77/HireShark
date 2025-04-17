@@ -1,3 +1,4 @@
+import Navbar from '@/components/custom/Navbar'
 import { Candidate, columns } from './Columns'
 import { DataTable } from '@/components/data-table'
 import { Button } from '@/components/ui/button'
@@ -7,58 +8,59 @@ import { useState, useEffect } from 'react'
 
 
 export default function TablePage() {
-    const [data, setData] = useState<Candidate[]>([]);
-    const [open, setOpen] = useState<boolean>(false);
-    
-    // fetching data
-    async function getData() {
-      const res = await fetch(
-        'http://localhost:8080/api/v1/getInfoWithoutResumePDF/all',
-        {
-          method: 'GET',
-        }
-      );
-      const resp = await res.json();
-      console.log(resp)
-      setData(resp);  
-    }
-  
-    useEffect(() => {
-      getData();  
-    }, []); 
-  
-    // function to create a job:
-    // async function handleCreateJob(jobTitle: string, jobDescription: string) {
-      
-    //   const payload = {
-    //     jobTitle,
-    //     jobDescription,
-    //     emails
-    //   }
+  const [data, setData] = useState<Candidate[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
 
-    //   console.log(payload);
-    //   setOpen(false);
-    // }
+  // fetching data
+  async function getData() {
+    const res = await fetch(
+      'http://localhost:8080/api/v1/getInfoWithoutResumePDF/all',
+      {
+        method: 'GET',
+      }
+    );
+    const resp = await res.json();
+    console.log(resp)
+    setData(resp);
+  }
 
-    // make email list from data:
-    const emails = data.map((candidate: any) => ({ id: candidate.id.timestamp, email: candidate.senderEmail }));
+  useEffect(() => {
+    getData();
+  }, []);
 
-    const handleSendEmails = async () => {
-      const res = await fetch('http://localhost:8080/api/v1/sendMultipleTestLink/oralRound2', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(emails),
-      })
+  // function to create a job:
+  // async function handleCreateJob(jobTitle: string, jobDescription: string) {
 
-      const resp = res.json();
-      console.log(resp);
-    }
+  //   const payload = {
+  //     jobTitle,
+  //     jobDescription,
+  //     emails
+  //   }
 
-    return (
-      <section className="py-24">
-        
+  //   console.log(payload);
+  //   setOpen(false);
+  // }
+
+  // make email list from data:
+  const emails = data.map((candidate: any) => ({ id: candidate.id.timestamp, email: candidate.senderEmail }));
+
+  const handleSendEmails = async () => {
+    const res = await fetch('http://localhost:8080/api/v1/sendMultipleTestLink/oralRound2', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(emails),
+    })
+
+    const resp = res.json();
+    console.log(resp);
+  }
+
+  return (
+    <div>
+      <Navbar />
+      <section className="pt-8 py-24">
         <div className="container">
           <h1 className="text-3xl font-bold my-3">All Users</h1>
           {/* <Button 
@@ -67,15 +69,16 @@ export default function TablePage() {
             >
               <Plus />Create Job Opening
           </Button> */}
-          <Button 
+          <Button
             variant="outline"
             onClick={handleSendEmails}
-            >
-              Send Test Link
+          >
+            Send Test Link
           </Button>
           {/* <NewJobModal open={open} setOpen={setOpen} onCreateJob={handleCreateJob} /> */}
           <DataTable columns={columns} data={data} />
         </div>
       </section>
-    );
-  }
+    </div>
+  );
+}

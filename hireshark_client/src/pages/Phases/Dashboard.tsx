@@ -10,6 +10,7 @@ import Phase4Page from './Phase4/Phase4Page';
 
 import { Phase1_Result } from './Phase2/Columns';
 import { Phase2_Result } from './Phase3/Columns';
+import Navbar from '@/components/custom/Navbar';
 
 export interface Phase {
     stepId: number;
@@ -147,7 +148,8 @@ export default function Dashboard() {
 
     return (
         <div className="flex flex-col items-center">
-            <div className="bg-white px-6 py-4 rounded-2xl shadow-md border w-5/6 mb-6">
+            <Navbar />
+            <div className="bg-white px-6 pt-10 pb-4 rounded-2xl shadow-md border w-5/6 mb-6">
                 <p className="text-3xl font-bold text-gray-800">{currJobData?.jobTitle}</p>
                 <p className="text-md font-medium text-gray-500">Job ID: {humanReadableJobId}</p>
             </div>
