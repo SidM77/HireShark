@@ -28,12 +28,12 @@ public class Mail {
     private String parsedResume;
     private List<String> technologies;
 
-    private Map<String, String> questions;  // Store dynamic questions with their keys
-    private Map<String, String> answers;
-
-    //Parameters for Krish Technical Test
-    private int technicalTestScore;
-    private boolean audioDetected;
-    private int lookingAroundCount;
-    private int cheatingSpikeCount;
+//    private Map<String, String> questions;  // Store dynamic questions with their keys
+//    private Map<String, String> answers;
+//
+//    //Parameters for Krish Technical Test
+//    private int technicalTestScore;
+//    private boolean audioDetected;
+//    private int lookingAroundCount;
+//    private int cheatingSpikeCount;
 }
