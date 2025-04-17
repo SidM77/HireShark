@@ -2,10 +2,13 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
+
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+
 import TablePage from './pages/Scratch/TablePage'
 import Dashboard from './pages/Phases/Dashboard'
 import AllJobsPage from './pages/AllJobs/AllJobsPage';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import WelcomePage from './pages/WelcomePage';
 
 function App() {
 
@@ -13,6 +16,7 @@ function App() {
     <>
         <BrowserRouter>
             <Routes>
+                <Route path='/' element={<WelcomePage />}/>
                 <Route path='/all-candidates' element={<TablePage/>}/>
                 <Route path='/jobs/selection' element={<Dashboard/>}/>
                 <Route path='/all-jobs' element={<AllJobsPage />}/>
