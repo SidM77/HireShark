@@ -66,7 +66,9 @@ public class KafkaListener {
         String email = jsonNode.get("email").asText();
         String id = jsonNode.get("id").asText();
         String jobId = jsonNode.get("jobId").asText();
-        sendEmailService.sendEmail(email, "Congratulations on clearing Round-1. Please use this link to give Round 2 of the test http://localhost:5174/richRound2/"+ jobId , "Invitation to Interview Round 2");
+        sendEmailService.sendEmail(email, "Dear Candidate,\n\nCongratulations on clearing Round-1," +
+                "as such you are invited to a secondary oral assessment as part of the interview process.\n\n" +
+                " Please use this link to give Round 2 of the test http://localhost:5174/richRound2/"+ jobId , "Invitation to Assessment Round 2");
     }
 
     @org.springframework.kafka.annotation.KafkaListener(topics="richTechnicalTestTopic", groupId = "groupId")
