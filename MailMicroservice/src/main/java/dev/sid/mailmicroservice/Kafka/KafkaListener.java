@@ -118,16 +118,17 @@ public class KafkaListener {
         JsonNode jsonNode = objectMapper.readTree(message);
 
         String email = jsonNode.get("email").asText();
-        String id = jsonNode.get("id").asText();
+        String jobDescription = jsonNode.get("id").asText();
         String jobId = jsonNode.get("jobId").asText();
         sendEmailService.sendEmail("siddanth.manoj@gmail.com", "Dear Siddanth, \n\nWe’d like to request your assistance in conducting a face-to-face online video interview" +
                 " for a candidate who has progressed to the next stage of our hiring process." +
                 "\n\nThe candidate has already completed the previous assessment rounds, and this interview will help us evaluate their fit for the role more comprehensively." +
                 "You may use this link to view the candidate's details \n" +
                 "http://localhost:8080/api/v1/getPDF/"+email +
-                "\n\nLink for the Interview -  https://meet.google.com/nid-kyeu-thf " +
+                "\n\nLink for the Interview -  https://meet.google.com/nid-kyeu-thf\n\n" +
+                "Role Details -  " +jobDescription+
                 "\n\nSubsequently kindly fill out the candidate evaluation report based on their performance in the interview using the below link.\n" +
-                "https://localhost:5173/candidateEvaluation/"+jobId+"/"+email+"\n\nThank you!" , "Request to Conduct Face-to-Face Online Video Interview");
+                "http://localhost:5173/candidateEvaluation?jobId="+jobId+"&email="+email+"\n\nThank you!" , "Request to Conduct Face-to-Face Online Video Interview");
 
     }
 
