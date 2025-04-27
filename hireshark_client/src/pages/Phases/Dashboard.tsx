@@ -12,6 +12,8 @@ import Phase5Page from './Phase5/Phase5Page';
 import { Phase1_Result } from './Phase2/Columns';
 import { Phase2_Result } from './Phase3/Columns';
 import Navbar from '@/components/custom/Navbar';
+import { Phase3_Result } from './Phase4/Columns';
+import { Phase4_Result } from './Phase5/Columns';
 
 export interface Phase {
     stepId: number;
@@ -33,7 +35,8 @@ export default function Dashboard() {
     // might need these, not too sure
     const [phase2_InitialData, setPhase2_InitialData] = useState<Phase1_Result[]>([]);
     const [phase3_InitialData, setPhase3_InitialData] = useState<Phase2_Result[]>([]);
-    const [phase4_InitialData, setPhase4_InitialData] = useState<any[]>([]);
+    const [phase4_InitialData, setPhase4_InitialData] = useState<Phase3_Result[]>([]);
+    const [phase5_InitialData, setPhase5_InitialData] = useState<Phase4_Result[]>([]);
 
     const location = useLocation();
     let humanReadableJobId = location.state.humanReadableJobId
@@ -139,6 +142,10 @@ export default function Dashboard() {
         {
             stepId: 5,
             label: "Send Offer Letter"
+        },
+        {
+            stepId: 6,
+            label: "Hiring Completion!"
         }
     ]
 
@@ -153,7 +160,9 @@ export default function Dashboard() {
             case 4:
                 return <Phase4Page jobId={humanReadableJobId} jobDsc={jobDsc} Phase3_Result_data={phase4_InitialData} onSubmission={Phase4_Submission} />;
             case 5:
-                return <Phase5Page />
+                return <Phase5Page jobId={humanReadableJobId} Phase4_Result_data={phase5_InitialData} onSubmission={Phase4_Submission} />;
+            case 6:
+                
         }
     }
 
@@ -168,7 +177,7 @@ export default function Dashboard() {
 
 
             <div className='mb-5 w-5/6'>
-                <Stepper currentStep={currPhase} numberOfSteps={5} phaseInfo={phaseInfo} />
+                <Stepper currentStep={currPhase} numberOfSteps={6} phaseInfo={phaseInfo} />
             </div>
 
             <div>
