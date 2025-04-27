@@ -7,6 +7,7 @@ import Phase1Page from './Phase1/Phase1Page';
 import Phase2Page from './Phase2/Phase2Page';
 import Phase3Page from './Phase3/Phase3Page';
 import Phase4Page from './Phase4/Phase4Page';
+import Phase5Page from './Phase5/Phase5Page';
 
 import { Phase1_Result } from './Phase2/Columns';
 import { Phase2_Result } from './Phase3/Columns';
@@ -27,6 +28,7 @@ export default function Dashboard() {
 
     const [currPhase, setCurrPhase] = useState<number>(1);
     const [currJobData, setCurrJobData] = useState<SpecificJobProcessData | null>();
+    const [jobDsc, setJobDsc] = useState<string>("");
 
     // might need these, not too sure
     const [phase2_InitialData, setPhase2_InitialData] = useState<Phase1_Result[]>([]);
@@ -49,6 +51,7 @@ export default function Dashboard() {
 
             setCurrJobData(resp);
             setCurrPhase(resp.phase);
+            setJobDsc(resp.jobDescription);
             setPhase2_InitialData(resp.allCandidatesRankingPhase1);
             setPhase3_InitialData(resp.allTechTestResults);
             setPhase4_InitialData(resp.allOralTestResults);
@@ -148,7 +151,9 @@ export default function Dashboard() {
             case 3:
                 return <Phase3Page jobId={humanReadableJobId} Phase2_Result_data={phase3_InitialData} onSubmission={Phase3_Submission} />;
             case 4:
-                return <Phase4Page jobId={humanReadableJobId} Phase3_Result_data={phase4_InitialData} onSubmission={Phase4_Submission} />
+                return <Phase4Page jobId={humanReadableJobId} jobDsc={jobDsc} Phase3_Result_data={phase4_InitialData} onSubmission={Phase4_Submission} />;
+            case 5:
+                return <Phase5Page />
         }
     }
 

@@ -3,9 +3,10 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import {ExternalLink, FileText, XCircle} from "lucide-react";
+import { ExternalLink, FileText, XCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -46,6 +47,35 @@ const handleViewQA = (questions: Record<string, string>, answers: Record<string,
 };
 
 export const columns: ColumnDef<Phase3_Result>[] = [
+    {
+        id: "select",
+        header: ({ table }) => (
+            <div className="flex items-center space-x-2">
+                <Checkbox
+                    checked={
+                        table.getIsAllPageRowsSelected() ||
+                        (table.getIsSomePageRowsSelected() && "indeterminate")
+                    }
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            </div>
+        ),
+        cell: ({ row }) => (
+            <div className="flex items-center space-x-2">
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
+                />
+            </div>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: "senderEmail",
         header: "Email"
