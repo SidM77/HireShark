@@ -1,9 +1,4 @@
-package dev.sid.sidspringbackend.Kafka;
-
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+package dev.sid.sidspringbackend.Kafka.redundant;
 
 //@RestController
 //@CrossOrigin(origins = "*")
