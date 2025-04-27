@@ -103,5 +103,33 @@ public class JobController {
             return ResponseEntity.ok(resultMessage);
         }
     }
+
+    public ResponseEntity<String> addCandidateReport(@RequestBody Map<String, Object> requestPayload) {
+        String email = (String) requestPayload.get("email");
+        String jobId = (String) requestPayload.get("jobId");
+        int techKnowledge = (int) requestPayload.get("techKnowledge");
+        int communication = (int) requestPayload.get("communication");
+        int problemSolving = (int) requestPayload.get("problemSolving");;
+        String comments = (String) requestPayload.get("comments");
+
+        String resultMessage  = jobService.updateCandidateReportByEngineer(email, jobId, techKnowledge, communication, problemSolving, comments);
+
+        if ("Job not found".equals(resultMessage)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resultMessage);
+        } else {
+            return ResponseEntity.ok(resultMessage);
+        }
+    }
+
+
+    @PostMapping("/closeJob")
+    public ResponseEntity<String> closeJob(@RequestBody String jobId) {
+        String response = jobService.closeJobByHumanReadableId(jobId);
+        if (response.equals("Y")) {
+            return ResponseEntity.status(HttpStatus.OK).body("Job has been closed");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job does not exist");
+        }
+    }
  }
 
