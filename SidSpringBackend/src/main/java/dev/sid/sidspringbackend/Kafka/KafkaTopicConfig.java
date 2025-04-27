@@ -31,4 +31,8 @@ public class KafkaTopicConfig {
     public NewTopic finalRoundTopic() {
         return TopicBuilder.name("finalRoundTopic").build();
     }
+
+    public NewTopic offerLetterTopic() {
+        return TopicBuilder.name("offerLetterTopic").build();
+    }
 }
