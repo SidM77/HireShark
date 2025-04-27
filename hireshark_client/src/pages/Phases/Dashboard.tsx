@@ -60,6 +60,12 @@ export default function Dashboard() {
 
     // phase1 result return function
     const Phase1_Submission = async () => {
+        // placing this above api call so that we can display next phase,
+        // initially it will have an empty table, which would then show rows
+        // when data is fetched from the below endpoint
+        // updating currStep
+        setCurrPhase(currPhase + 1);
+
         // submitting the resumes to DeepSeek
 
         // Taking DeepSeek's response and setting it to phase2InitialData
@@ -87,9 +93,6 @@ export default function Dashboard() {
         // })
         const resp: Phase1_Result[] = await res.json()
         setPhase2_InitialData(resp);
-
-        // updating currStep
-        setCurrPhase(currPhase + 1);
     }
 
     //phase2 result return function
@@ -129,6 +132,10 @@ export default function Dashboard() {
         {
             stepId: 4,
             label: "Send Link for Interview"
+        },
+        {
+            stepId: 5,
+            label: "Send Offer Letter"
         }
     ]
 
@@ -156,7 +163,7 @@ export default function Dashboard() {
 
 
             <div className='mb-5 w-5/6'>
-                <Stepper currentStep={currPhase} numberOfSteps={4} phaseInfo={phaseInfo} />
+                <Stepper currentStep={currPhase} numberOfSteps={5} phaseInfo={phaseInfo} />
             </div>
 
             <div>
