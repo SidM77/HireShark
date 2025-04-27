@@ -130,4 +130,18 @@ public class KafkaListener {
                 "https://localhost:5173/candidateEvaluation/"+jobId+"/"+email+"\n\nThank you!" , "Request to Conduct Face-to-Face Online Video Interview");
 
     }
+
+    @org.springframework.kafka.annotation.KafkaListener(topics="offerLetterTopic", groupId = "groupId")
+    public void listenerOfferLetter(String message) throws JsonProcessingException {
+        System.out.println("Offer letter");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(message);
+
+        String email = jsonNode.get("email").asText();
+        String jobTitle = jsonNode.get("id").asText();
+        String jobId = jsonNode.get("jobId").asText();
+
+        sendEmailService.sendOfferMail(email, jobTitle, "Congratulations on Job Offer!");
+    }
 }
