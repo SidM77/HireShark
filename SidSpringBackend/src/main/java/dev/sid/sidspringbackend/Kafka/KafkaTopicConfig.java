@@ -8,15 +8,15 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicConfig {
 
-    @Bean
-    public NewTopic oralTestTopic() {
-        return TopicBuilder.name("oralTestTopic").build();
-    }
-
-    @Bean
-    public NewTopic technicalTestTopic() {
-        return TopicBuilder.name("technicalTestTopic").build();
-    }
+//    @Bean
+//    public NewTopic oralTestTopic() {
+//        return TopicBuilder.name("oralTestTopic").build();
+//    }
+//
+//    @Bean
+//    public NewTopic technicalTestTopic() {
+//        return TopicBuilder.name("technicalTestTopic").build();
+//    }
 
     @Bean
     public NewTopic richOralTestTopic() {
@@ -26,5 +26,13 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic richTechnicalTopic() {
         return TopicBuilder.name("richTechnicalTestTopic").build();
+    }
+
+    public NewTopic finalRoundTopic() {
+        return TopicBuilder.name("finalRoundTopic").build();
+    }
+
+    public NewTopic offerLetterTopic() {
+        return TopicBuilder.name("offerLetterTopic").build();
     }
 }

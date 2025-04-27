@@ -29,24 +29,24 @@ public class MailService {
         return mailRepository.findAll();
     }
 
-    public boolean updateMailWithAnswers(String email, Map<String, String> questions, Map<String, String> answers) {
-        // Find the Mail by sender_email using the repository method
-        Optional<Mail> optionalMail = mailRepository.findMailBySenderEmail(email);
-
-        if (optionalMail.isPresent()) {
-            Mail mail = optionalMail.get();
-
-            // Update the questions and answers in the existing Mail document
-            mail.setQuestions(questions);
-            mail.setAnswers(answers);
-
-            // Save the updated mail document back to MongoDB
-            mailRepository.save(mail);
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    public boolean updateMailWithAnswers(String email, Map<String, String> questions, Map<String, String> answers) {
+//        // Find the Mail by sender_email using the repository method
+//        Optional<Mail> optionalMail = mailRepository.findMailBySenderEmail(email);
+//
+//        if (optionalMail.isPresent()) {
+//            Mail mail = optionalMail.get();
+//
+//            // Update the questions and answers in the existing Mail document
+//            mail.setQuestions(questions);
+//            mail.setAnswers(answers);
+//
+//            // Save the updated mail document back to MongoDB
+//            mailRepository.save(mail);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
 
     public List<Mail> getMailWithoutPDF() {
