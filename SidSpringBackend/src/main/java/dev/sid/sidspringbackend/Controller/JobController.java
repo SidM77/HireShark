@@ -104,6 +104,7 @@ public class JobController {
         }
     }
 
+    @PostMapping("/addCandidateReport")
     public ResponseEntity<String> addCandidateReport(@RequestBody Map<String, Object> requestPayload) {
         String email = (String) requestPayload.get("email");
         String jobId = (String) requestPayload.get("jobId");
