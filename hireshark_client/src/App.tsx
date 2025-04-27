@@ -9,6 +9,7 @@ import TablePage from './pages/Scratch/TablePage'
 import Dashboard from './pages/Phases/Dashboard'
 import AllJobsPage from './pages/AllJobs/AllJobsPage';
 import WelcomePage from './pages/WelcomePage';
+import CandidateReportForm from './pages/CandidateReportForm';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
                 <Route path='/all-candidates' element={<TablePage/>}/>
                 <Route path='/jobs/selection' element={<Dashboard/>}/>
                 <Route path='/all-jobs' element={<AllJobsPage />}/>
+                <Route path='/candidateEvaluation' element={<CandidateReportForm />} />
             </Routes>
         </BrowserRouter>
     </>

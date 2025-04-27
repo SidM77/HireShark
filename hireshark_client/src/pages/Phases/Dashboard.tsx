@@ -24,6 +24,7 @@ export interface SpecificJobProcessData extends Job {
     allCandidatesRankingPhase1: Phase1_Result[],
     allOralTestResults: any[],
     allTechTestResults: Phase2_Result[],
+    finalCandidateReports: Phase4_Result[],
 }
 
 export default function Dashboard() {
@@ -58,6 +59,7 @@ export default function Dashboard() {
             setPhase2_InitialData(resp.allCandidatesRankingPhase1);
             setPhase3_InitialData(resp.allTechTestResults);
             setPhase4_InitialData(resp.allOralTestResults);
+            setPhase5_InitialData(resp.finalCandidateReports);
 
         } catch (error) {
             console.error("Failed to fetch job data:", error);

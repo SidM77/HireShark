@@ -40,10 +40,40 @@ const handleViewFeedback = (candidate: Phase4_Result) => {
         <head>
           <title>Candidate Feedback</title>
           <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h2 { margin-bottom: 20px; }
-            .section { margin-bottom: 30px; }
-            .question-answer { margin-bottom: 15px; }
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              background-color: #f4f6f8;
+              padding: 30px;
+              margin: 0;
+            }
+            h2 {
+              text-align: center;
+              color: #333;
+              margin-bottom: 30px;
+            }
+            .section {
+              background: #ffffff;
+              padding: 20px 25px;
+              margin-bottom: 30px;
+              border-radius: 10px;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            .section h3 {
+              font-size: 20px;
+              margin-bottom: 20px;
+              color: #007bff;
+              border-bottom: 2px solid #eee;
+              padding-bottom: 8px;
+            }
+            .detail {
+              margin-bottom: 15px;
+              font-size: 16px;
+            }
+            .detail strong {
+              color: #555;
+              display: inline-block;
+              width: 180px;
+            }
           </style>
         </head>
         <body>
@@ -51,16 +81,16 @@ const handleViewFeedback = (candidate: Phase4_Result) => {
   
           <div class="section">
             <h3>Overall Ratings</h3>
-            <p><strong>Technical Knowledge:</strong> ${candidate.techKnowledge}</p>
-            <p><strong>Communication:</strong> ${candidate.communication}</p>
-            <p><strong>Problem Solving:</strong> ${candidate.problemSolving}</p>
-            <p><strong>Comments:</strong> ${candidate.comments || "N/A"}</p>
+            <div class="detail"><strong>Technical Knowledge:</strong> ${candidate.techKnowledge}</div>
+            <div class="detail"><strong>Communication:</strong> ${candidate.communication}</div>
+            <div class="detail"><strong>Problem Solving:</strong> ${candidate.problemSolving}</div>
+            <div class="detail"><strong>Comments:</strong> ${candidate.comments || "N/A"}</div>
           </div>
-  
         </body>
       </html>
     `);
   };
+  
 
 export const columns: ColumnDef<Phase4_Result>[] = [
     {
