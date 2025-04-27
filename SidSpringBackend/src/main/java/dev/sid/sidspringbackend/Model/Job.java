@@ -2,6 +2,7 @@ package dev.sid.sidspringbackend.Model;
 
 
 import dev.sid.sidspringbackend.POJOs.CandidateRank;
+import dev.sid.sidspringbackend.POJOs.FinalCandidateReport;
 import dev.sid.sidspringbackend.POJOs.OralTestResults;
 import dev.sid.sidspringbackend.POJOs.TechTestResults;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class Job {
     private List<CandidateRank> allCandidatesRankingPhase1;
     private List<TechTestResults> allTechTestResults;
     private List<OralTestResults> allOralTestResults;
+    private List<FinalCandidateReport> finalCandidateReports;
     private int phase;
     private boolean isOpenPosition;
 
