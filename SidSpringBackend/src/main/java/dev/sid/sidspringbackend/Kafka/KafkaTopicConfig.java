@@ -27,4 +27,8 @@ public class KafkaTopicConfig {
     public NewTopic richTechnicalTopic() {
         return TopicBuilder.name("richTechnicalTestTopic").build();
     }
+
+    public NewTopic finalRoundTopic() {
+        return TopicBuilder.name("finalRoundTopic").build();
+    }
 }
