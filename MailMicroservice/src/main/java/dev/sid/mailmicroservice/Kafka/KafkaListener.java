@@ -79,8 +79,53 @@ public class KafkaListener {
         String email = jsonNode.get("email").asText();
         String id = jsonNode.get("id").asText();
         String jobId = jsonNode.get("jobId").asText();
-        sendEmailService.sendEmail(email, "Please use this link to give Round 1  http://localhost:5000/round1/"+ jobId , "Invitation to Interview Round 1");
+        sendEmailService.sendEmail(email, "Dear Candidate, \n\n" +
+                "Thank you for you interest in a role, you have been selected to give the first round which will be an online assessment of your technical skills.\n\n" +
+                "As such, please use this link to give Round 1  http://localhost:5000/round1/"+ jobId , "Invitation to Assessment Round 1");
     }
 
+    @org.springframework.kafka.annotation.KafkaListener(topics="finalRoundTopic", groupId = "groupId1")
+    public void listenerFinalRoundCandidateInterviewLink(String message) throws JsonProcessingException {
+        System.out.println("Candiate Interview Link being processed");
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(message);
 
+        String email = jsonNode.get("email").asText();
+        String id = jsonNode.get("id").asText();
+        String jobId = jsonNode.get("jobId").asText();
+        sendEmailService.sendEmail(email, """
+                Dear Candidate,\s
+                
+                Congratulations on clearing the Initial Interview rounds!\s
+                
+                 \
+                We'd like to invite you for Face-to-Face online technical Interview using the below link!\s
+                
+                 https://meet.google.com/nid-kyeu-thf
+                
+                 Please ensure a stable internet connection throughout the test, \
+                 please feel free to reach out in case of any queries or accommodations.""", "Invite for Technical Interview");
+
+    }
+
+    @org.springframework.kafka.annotation.KafkaListener(topics="finalRoundTopic", groupId = "groupId2")
+    public void listenerFinalRoundEngineerInterviewLink(String message) throws JsonProcessingException {
+        System.out.println("SWE Interview Request Link being processed");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(message);
+
+        String email = jsonNode.get("email").asText();
+        String id = jsonNode.get("id").asText();
+        String jobId = jsonNode.get("jobId").asText();
+        sendEmailService.sendEmail("siddanth.manoj@gmail.com", "Dear Siddanth, \n\nWe’d like to request your assistance in conducting a face-to-face online video interview" +
+                " for a candidate who has progressed to the next stage of our hiring process." +
+                "\n\nThe candidate has already completed the previous assessment rounds, and this interview will help us evaluate their fit for the role more comprehensively." +
+                "You may use this link to view the candidate's details \n" +
+                "http://localhost:8080/api/v1/getPDF/"+email +
+                "\n\nLink for the Interview -  https://meet.google.com/nid-kyeu-thf " +
+                "\n\nSubsequently kindly fill out the candidate evaluation report based on their performance in the interview using the below link.\n" +
+                "https://localhost:5173/candidateEvaluation/"+jobId+"/"+email+"\n\nThank you!" , "Request to Conduct Face-to-Face Online Video Interview");
+
+    }
 }
