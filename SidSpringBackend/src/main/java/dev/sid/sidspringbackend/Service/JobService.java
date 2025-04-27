@@ -25,6 +25,7 @@ public class JobService {
         job.setOpenPosition(true);
         job.setPhase(1);
         job.setAllOralTestResults(new ArrayList<OralTestResults>());
+        job.setFinalCandidateReports(new ArrayList<FinalCandidateReport>());
         return jobRepository.save(job);
     }
 
