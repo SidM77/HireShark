@@ -60,7 +60,7 @@ public class SendEmailService {
             helper.setText(htmlContent, true);
 
             // Attach an image (e.g., a congratulations image)
-            File imageFile = new File("C:/Users/sidda/Desktop/Projects/BE_Project/MailMicroservice/src/main/java/dev/sid/mailmicroservice/Service/finalHeader.png");
+            File imageFile = new File("C:/Users/sidda/Desktop/Projects/BE_Project/MailMicroservice/src/main/java/dev/sid/mailmicroservice/Service/NewFinal.png");
             if (imageFile.exists()) {
                 System.out.println("Meow");
                 helper.addInline("congrats_image", new FileDataSource(imageFile));
