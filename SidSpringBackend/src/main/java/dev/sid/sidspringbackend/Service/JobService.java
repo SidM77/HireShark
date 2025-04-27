@@ -2,6 +2,7 @@ package dev.sid.sidspringbackend.Service;
 
 import dev.sid.sidspringbackend.Model.Job;
 import dev.sid.sidspringbackend.POJOs.CandidateRank;
+import dev.sid.sidspringbackend.POJOs.FinalCandidateReport;
 import dev.sid.sidspringbackend.POJOs.OralTestResults;
 import dev.sid.sidspringbackend.Repository.JobRepository;
 import org.springframework.stereotype.Service;
@@ -115,5 +116,53 @@ public class JobService {
             job.setPhase(newPhase);
             jobRepository.save(job);
         }
+    }
+
+    public String closeJobByHumanReadableId(String jobId) {
+        Optional<Job> optionalJob = jobRepository.findByHumanReadableJobId(jobId);
+
+        if (optionalJob.isPresent()) {
+            Job job = optionalJob.get();
+            job.setOpenPosition(false);
+            jobRepository.save(job);
+            return "Y";
+        } else {
+            return "N";
+        }
+    }
+
+
+    public String updateCandidateReportByEngineer(String email, String jobId, int techKnowledge, int communication, int problemSolving, String comments) {
+        Optional<Job> optionalJob = jobRepository.findByHumanReadableJobId(jobId);
+
+        // Check if job is present
+        if (optionalJob.isEmpty()) {
+            return "Job not found";
+        }
+
+        // Get the job object from the Optional
+        Job job = optionalJob.get();
+
+        FinalCandidateReport finalCandidateReport = job.getFinalCandidateReports().stream()
+                .filter(result -> result.getSenderEmail().equals(email))
+                .findFirst()
+                .orElse(null);
+
+        if (finalCandidateReport != null) {
+            // Update the existing entry with new questions and answers
+            finalCandidateReport.setComments(comments);
+            finalCandidateReport.setCommunication(communication);
+            finalCandidateReport.setProblemSolving(problemSolving);
+            finalCandidateReport.setTechKnowledge(techKnowledge);
+        } else {
+            // Create new OralTestResults entry and add it to the list
+            FinalCandidateReport newReport = new FinalCandidateReport(email, techKnowledge, communication, problemSolving,  comments);
+            job.getFinalCandidateReports().add(newReport);
+        }
+
+        // Save the updated job document back to the database
+        jobRepository.save(job);
+
+        return "Answers updated successfully";
     }
 }
