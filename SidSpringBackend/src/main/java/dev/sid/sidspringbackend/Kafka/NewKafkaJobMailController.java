@@ -64,4 +64,23 @@ public class NewKafkaJobMailController {
         }
     }
 
+    @PostMapping("/rich/sendMultipleTestLink/finalRound3")
+    public void publishMultipleFinal(@RequestBody List<RichMessageRequest> richMessageRequests){
+        String jobId = richMessageRequests.getFirst().jobId();
+        jobService.setPhaseByHumanReadableId(jobId, 5);
+        for (RichMessageRequest messageRequest: richMessageRequests) {
+            richKafkaTemplate.send("finalRoundTopic", messageRequest);
+            System.out.println("Final Round Producer "+ messageRequest.toString());
+        }
+    }
+
+    @PostMapping("/rich/sendMultipleOfferLink")
+    public void publishMultipleOffer(@RequestBody List<RichMessageRequest> richMessageRequests) {
+        String jobId = richMessageRequests.getFirst().jobId();
+//        jobService.setPhaseByHumanReadableId(jobId, 6);
+        for (RichMessageRequest messageRequest: richMessageRequests) {
+            richKafkaTemplate.send("offerLetterTopic", messageRequest);
+            System.out.println("Offer Letter Producer "+ messageRequest.toString());
+        }
+    }
 }
