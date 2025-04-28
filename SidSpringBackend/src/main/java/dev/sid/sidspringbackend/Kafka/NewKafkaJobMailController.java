@@ -77,7 +77,7 @@ public class NewKafkaJobMailController {
     @PostMapping("/rich/sendMultipleOfferLink")
     public void publishMultipleOffer(@RequestBody List<RichMessageRequest> richMessageRequests) {
         String jobId = richMessageRequests.getFirst().jobId();
-//        jobService.setPhaseByHumanReadableId(jobId, 6);
+        jobService.setPhaseByHumanReadableId(jobId, 6);
         for (RichMessageRequest messageRequest: richMessageRequests) {
             richKafkaTemplate.send("offerLetterTopic", messageRequest);
             System.out.println("Offer Letter Producer "+ messageRequest.toString());

@@ -25,8 +25,21 @@ function Phase5Page({ jobId, Phase4_Result_data, onSubmission }: Phase5PageProps
     jobId: jobId
   }));
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log(selectedEmails)
+    // /rich/sendMultipleOfferLink
+
+    const res = await fetch('http://localhost:8080/api/v1/rich/sendMultipleOfferLink',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedEmails)
+      }
+    );
+    console.log(res)
+    onSubmission();
   }
 
   return (

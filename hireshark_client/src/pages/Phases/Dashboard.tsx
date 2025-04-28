@@ -8,6 +8,7 @@ import Phase2Page from './Phase2/Phase2Page';
 import Phase3Page from './Phase3/Phase3Page';
 import Phase4Page from './Phase4/Phase4Page';
 import Phase5Page from './Phase5/Phase5Page';
+import Phase6Page from './Phase6/Phase6Page';
 
 import { Phase1_Result } from './Phase2/Columns';
 import { Phase2_Result } from './Phase3/Columns';
@@ -32,6 +33,7 @@ export default function Dashboard() {
     const [currPhase, setCurrPhase] = useState<number>(1);
     const [currJobData, setCurrJobData] = useState<SpecificJobProcessData | null>();
     const [jobDsc, setJobDsc] = useState<string>("");
+    const [jobTitle, setJobTitle] = useState<string>("");
 
     // might need these, not too sure
     const [phase2_InitialData, setPhase2_InitialData] = useState<Phase1_Result[]>([]);
@@ -56,6 +58,7 @@ export default function Dashboard() {
             setCurrJobData(resp);
             setCurrPhase(resp.phase);
             setJobDsc(resp.jobDescription);
+            setJobTitle(resp.jobTitle);
             setPhase2_InitialData(resp.allCandidatesRankingPhase1);
             setPhase3_InitialData(resp.allTechTestResults);
             setPhase4_InitialData(resp.allOralTestResults);
@@ -104,18 +107,8 @@ export default function Dashboard() {
     }
 
     //phase2 result return function
-    const Phase2_Submission = async () => {
+    const Phase_Submission = async () => {
         // still need to work out the data transfer part
-
-        setCurrPhase(currPhase + 1);
-    }
-
-    const Phase3_Submission = () => {
-
-        setCurrPhase(currPhase + 1);
-    }
-
-    const Phase4_Submission = () => {
 
         setCurrPhase(currPhase + 1);
     }
@@ -156,15 +149,15 @@ export default function Dashboard() {
             case 1:
                 return <Phase1Page jobId={humanReadableJobId} onSubmission={Phase1_Submission} />;
             case 2:
-                return <Phase2Page jobId={humanReadableJobId} Phase1_Result_data={phase2_InitialData} onSubmission={Phase2_Submission} />;
+                return <Phase2Page jobId={humanReadableJobId} Phase1_Result_data={phase2_InitialData} onSubmission={Phase_Submission} />;
             case 3:
-                return <Phase3Page jobId={humanReadableJobId} Phase2_Result_data={phase3_InitialData} onSubmission={Phase3_Submission} />;
+                return <Phase3Page jobId={humanReadableJobId} Phase2_Result_data={phase3_InitialData} onSubmission={Phase_Submission} />;
             case 4:
-                return <Phase4Page jobId={humanReadableJobId} jobDsc={jobDsc} Phase3_Result_data={phase4_InitialData} onSubmission={Phase4_Submission} />;
+                return <Phase4Page jobId={humanReadableJobId} jobTitle={jobTitle} jobDsc={jobDsc} Phase3_Result_data={phase4_InitialData} onSubmission={Phase_Submission} />;
             case 5:
-                return <Phase5Page jobId={humanReadableJobId} Phase4_Result_data={phase5_InitialData} onSubmission={Phase4_Submission} />;
+                return <Phase5Page jobId={humanReadableJobId} Phase4_Result_data={phase5_InitialData} onSubmission={Phase_Submission} />;
             case 6:
-                
+                return <Phase6Page jobId={humanReadableJobId} jobTitle={jobTitle} onSubmission={Phase_Submission} />
         }
     }
 

@@ -18,23 +18,24 @@ import { Phase3_Result, columns } from './Columns'
 
 type Phase4PageProps = {
   jobId: string;
+  jobTitle: string;
   jobDsc: string;
   Phase3_Result_data: Phase3_Result[];
   onSubmission: () => void;
 }
 
-function Phase4Page({ jobId, jobDsc, Phase3_Result_data, onSubmission }: Phase4PageProps) {
+function Phase4Page({ jobId, jobTitle, jobDsc, Phase3_Result_data, onSubmission }: Phase4PageProps) {
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [data, setData] = useState<Phase3_Result[]>(Phase3_Result_data);
   const [showModal, setShowModal] = useState(false);
 
-  const jobIdPludDesc = jobId + " " + jobDsc;
+  const jobTitlePludDesc = jobTitle + " " + jobDsc;
   const selectedRowIds = Object.keys(rowSelection); // array of selected row ids
   const selectedCount = Object.keys(rowSelection).length;
 
   const selectedEmails = selectedRowIds.map((id) => ({
-    id: jobIdPludDesc,
+    id: jobTitlePludDesc,
     email: data[Number(id)]?.senderEmail,
     jobId: jobId
   }));
@@ -50,7 +51,7 @@ function Phase4Page({ jobId, jobDsc, Phase3_Result_data, onSubmission }: Phase4P
       }
     );
     console.log(res)
-    // onSubmission();
+    onSubmission();
   };
 
   return (

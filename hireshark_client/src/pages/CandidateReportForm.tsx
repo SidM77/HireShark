@@ -64,6 +64,8 @@ const CandidateReportForm: React.FC = () => {
             value={techKnowledge}
             onChange={(e) => setTechKnowledge(Number(e.target.value))}
             className="w-full p-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            min={0}
+            max={10}
           />
         </div>
 
@@ -74,6 +76,8 @@ const CandidateReportForm: React.FC = () => {
             value={communication}
             onChange={(e) => setCommunication(Number(e.target.value))}
             className="w-full p-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            min={0}
+            max={10}
           />
         </div>
 
@@ -84,6 +88,8 @@ const CandidateReportForm: React.FC = () => {
             value={problemSolving}
             onChange={(e) => setProblemSolving(Number(e.target.value))}
             className="w-full p-3 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            min={0}
+            max={10}
           />
         </div>
 
