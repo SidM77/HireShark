@@ -3,45 +3,33 @@ import { DataTable } from '@/components/data-table';
 import { RowSelectionState } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Phase4_Result, columns } from './Columns';
 
-import { Phase3_Result, columns } from './Columns'
-
-type Phase4PageProps = {
+type Phase5PageProps = {
   jobId: string;
-  jobTitle: string;
-  jobDsc: string;
-  Phase3_Result_data: Phase3_Result[];
+  Phase4_Result_data: Phase4_Result[];
   onSubmission: () => void;
 }
 
-function Phase4Page({ jobId, jobTitle, jobDsc, Phase3_Result_data, onSubmission }: Phase4PageProps) {
-
+function Phase5Page({ jobId, Phase4_Result_data, onSubmission }: Phase5PageProps) {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [data, setData] = useState<Phase3_Result[]>(Phase3_Result_data);
+  const [data, setData] = useState<Phase4_Result[]>(Phase4_Result_data);
   const [showModal, setShowModal] = useState(false);
 
-  const jobTitlePludDesc = jobTitle + " " + jobDsc;
   const selectedRowIds = Object.keys(rowSelection); // array of selected row ids
   const selectedCount = Object.keys(rowSelection).length;
 
   const selectedEmails = selectedRowIds.map((id) => ({
-    id: jobTitlePludDesc,
+    id: "",
     email: data[Number(id)]?.senderEmail,
     jobId: jobId
   }));
 
   const handleSubmit = async () => {
-    const res = await fetch('http://localhost:8080/api/v1/rich/sendMultipleTestLink/finalRound3',
+    console.log(selectedEmails)
+    // /rich/sendMultipleOfferLink
+
+    const res = await fetch('http://localhost:8080/api/v1/rich/sendMultipleOfferLink',
       {
         method: 'POST',
         headers: {
@@ -52,12 +40,12 @@ function Phase4Page({ jobId, jobTitle, jobDsc, Phase3_Result_data, onSubmission 
     );
     console.log(res)
     onSubmission();
-  };
+  }
 
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-xl font-semibold mb-2">
-        Shortlist Candidates for the Final Interview (Last Round)
+        Shortlist Candidates for the Role
       </h1>
 
       <div className="flex items-center gap-4 mb-4">
@@ -68,7 +56,7 @@ function Phase4Page({ jobId, jobTitle, jobDsc, Phase3_Result_data, onSubmission 
           <Button
             variant="link"
             onClick={() => setShowModal(true)}
-            className="bg-purple-800 text-white underline text-sm"
+            className="bg-green-700 text-white underline text-sm"
           >
             View Selected
           </Button>
@@ -80,10 +68,10 @@ function Phase4Page({ jobId, jobTitle, jobDsc, Phase3_Result_data, onSubmission 
         disabled={selectedCount === 0}
         className="mb-6"
       >
-        Send Email
+        Send Offer Letters
       </Button>
 
-      <div className="w-3/4">
+      <div className="">
         <DataTable
           columns={columns}
           data={data}
@@ -118,4 +106,4 @@ function Phase4Page({ jobId, jobTitle, jobDsc, Phase3_Result_data, onSubmission 
   )
 }
 
-export default Phase4Page
+export default Phase5Page
